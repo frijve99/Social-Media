@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAI-Profile</title>
+    <link rel="stylesheet" href="{% static 'profile.css' %}" />
+    <script
+      src="https://kit.fontawesome.com/a26c7d01cd.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav0">
+        <i class="fa-solid fa-f change-color fa-2xl"></i>
+        <i class="fa-solid fa-a change-color fa-xl"></i>
+        <i class="fa-solid fa-i-cursor change-color fa-xl"></i>
+      </div>
+      <div class="nav1">
+        <ul>
+          <li>
+            {% comment %} redirect to home page {% endcomment %}
+            <a href="{% url 'home' %}">
+              ><button class="btn">
+                <img src="{% static 'image/home-edit.png' %}" alt="" />
+              </button>
+            </a>
+          </li>
+          <li>
+            <button class="btn">
+              <img src="{% static 'image/notification.png' %}" alt="" />
+            </button>
+          </li>
+          <li>
+            <button class="btn">
+              <img src="{% static 'image/message.png' %}" alt="" />
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="nav2">
+        <div class="search">
+          <img src="{% static 'image/search.png' %}" alt="logo not found" />
+          <input type="text" placeholder="search" />
+        </div>
+      </div>
+      <div class="nav3">
+        <a class="btn" href="{% url 'logout' %}">
+          <i
+            class="fa-solid fa-arrow-right-from-bracket fa-2xl change-color"
+          ></i>
+        </a>
+      </div>
+    </nav>
+
+    <header>
+      <div class="container">
+        <div class="profile">
+          <div class="profile-image avatar-xl">
+            <img src="{{user_profile.profileimg.url}}" alt="" />
+          </div>
+
+          <div class="profile-user-settings">
+            <h1 class="profile-user-name">@{{user_profile.username}}</h1>
+            <a href="/about">
+              <button class="btn profile-edit-btn">View About</button></a
+            >
+            {% comment %}
+            <button class="btn profile-edit-btn">View About</button>
+            {% endcomment %}
+
+            <button
+              class="btn profile-settings-btn"
+              aria-label="profile settings"
+            >
+              <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="profile-stats">
+            <ul>
+              <li><span class="profile-stat-count">164</span> posts</li>
+              <li><span class="profile-stat-count">188</span> followers</li>
+              <li><span class="profile-stat-count">206</span> following</li>
+            </ul>
+          </div>
+
+          <div class="profile-bio">
+            <p>
+              <span class="profile-real-name">{{user_profile.username}}</span>
+              {{user_profile.bio}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <br />
+    <main>
+      <div class="break"></div>
+      <!-- <h1>Hello</h1> -->
+      <hr />
+      <div class="post">
+        <div class="container-2">
+          <h1>Create Your Post</h1>
+          <form>
+            <input
+              type="text"
+              name="post"
+              class="input2"
+              placeholder="Whats on your mind?"
+            />
+            <br />
+            <div class="post2">
+              <button type="submit" class="btn-2">Post</button>
+            </div>
+          </form>
+
+          <ul class="posts"></ul>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
