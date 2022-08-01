@@ -15,4 +15,6 @@ urlpatterns = [
     path('about', views.about, name = 'about'),
     path('accountSettings', views.accountSettings, name = 'accountSettings'),
     path('changePassword', views.changePassword, name = 'changePassword'),
+    path('home', views.home, name = 'home'),
+    
 ]

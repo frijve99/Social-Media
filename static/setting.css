@@ -3,7 +3,8 @@ body {
   background-color: white;
 }
 .avatar-xl img {
-  width: 110px;
+  width: 200px;
+  height: 180px;
 }
 .rounded-circle {
   border-radius: 50% !important;

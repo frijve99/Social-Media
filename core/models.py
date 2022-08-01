@@ -2,9 +2,8 @@ from django.db import models
 from ast import Pass
 # from django.db import models
 from django.contrib.auth import get_user_model
-from numpy import blackman
-from traitlets import default
-import datetime
+from datetime import datetime 
+import uuid
 from django.utils import timezone
 
 
@@ -45,4 +44,16 @@ class Profile(models.Model):
     def get_age(self):
         age = datetime.date.today()-self.dob
         return int((age).days/365.25)
+
+
+class Post(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4)
+    user = models.CharField(max_length=100)
+    post_image  = models.ImageField(upload_to = 'Post_image')
+    caption = models.TextField()
+    posted_at = models.DateField(default=timezone.now) 
+    likes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user
 

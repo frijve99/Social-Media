@@ -212,7 +212,7 @@ def home(request):
         'user_profile' : profile_obj,    
     }
 
-    return render(request,'index.html',context)  
+    return render(request,'home.html',context)  
 
 #If Password is forgotten
 def forgetPassword(request):
