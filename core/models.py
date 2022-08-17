@@ -56,9 +56,20 @@ class Post(models.Model):
     username = models.CharField(max_length=30,default='user')
     post_image  = models.ImageField(upload_to = 'Post_image')
     caption = models.TextField()
-    posted_at = models.DateField(default=timezone.now) 
+    posted_at = models.DateTimeField(default=timezone.now) 
     likes = models.IntegerField(default=0)
      
+    def __str__(self):
+        return self.username
+
+
+class LikesPost(models.Model):
+    like = models.ForeignKey(Post,on_delete=models.CASCADE,blank=True,
+        null=True)
+    post_id = models.CharField(max_length=100)
+    username = models.CharField(max_length=30)
+    likes_at = models.DateTimeField(default=timezone.now)
+
     def __str__(self):
         return self.username
 

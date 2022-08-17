@@ -94,9 +94,9 @@
 
           <div class="profile-stats">
             <ul>
-              <li><span class="profile-stat-count">164</span> posts</li>
-              <li><span class="profile-stat-count">188</span> followers</li>
-              <li><span class="profile-stat-count">206</span> following</li>
+              <li><span class="profile-stat-count">{{user_profile.posts}}</span> posts</li>
+              <li><span class="profile-stat-count">{{user_profile.follower}}</span> followers</li>
+              <li><span class="profile-stat-count">{{user_profile.following}}</span> following</li>
             </ul>
           </div>
 
@@ -142,6 +142,7 @@
         {% comment %} posts div {% endcomment %}
         <div class="postshow">
         {% comment %} post start {% endcomment %}
+         {% for post in posts reversed %}
           <div class="container-3">
             <div class="top-frame">
              <div class="usericon">
@@ -149,43 +150,51 @@
               <span class="frame-name">@{{user_profile.username}}</span>
               <span class="frame-option">
                 <div class="dropdown">
-    <button class="btn  " type="button" data-toggle="dropdown"><i class="fa-solid fa-ellipsis fa-2xl"></i>
-    <span ></span></button>
-    <ul class="dropdown-menu">
-      <li style="font-size: 1.5rem" ><a href="#">delete</a></li>
-      <li style="font-size: 1.5rem"><a href="#">hide</a></li>
-      <li style="font-size: 1.5rem"><a href="#">repost</a></li>
-    </ul>
-  </div>
+              <button class="btn  " type="button" data-toggle="dropdown">
+                <i class="fa-solid fa-ellipsis fa-2xl"></i>
+               <span ></span></button>
+               <ul class="dropdown-menu">
+               <li style="font-size: 1.5rem" ><a href="#">delete</a></li>
+               <li style="font-size: 1.5rem"><a href="#">hide</a></li>
+               <li style="font-size: 1.5rem"><a href="#">repost</a></li>
+               </ul>
+               </div>
               </span>
-               {% comment %} <span class="frame-option"><i class="fa-solid fa-ellipsis-vertical"></i></span>  {% endcomment %}
-               <span class="frame-time">Posted At 2A.M</i></span>        
-            </div>
-            </div>
-             <div class="body-frame">
-                      lorem200
+              {% load tz %}
+               <span class="frame-time">Posted At {{post.posted_at}}</i></span>        
+              </div>
              </div>
-              <div class="body-image">
-                      <img src="{{user_profile.profileimg.url}}" alt="" class="bdimg"/> 
+             <div class="body-frame">
+                      {{post.caption}}
+             </div>
+             <div class="body-image">
+                      <img src="{{post.post_image.url}}" alt="" class="bdimg"/> 
              </div>
              <div class="bottom-frame">
+                 <a href="/like?id={{post.id}}">
                       <button
                       class="btn profile-settings-btn"
                      aria-label="profile settings"
                       >
                      <i class="fa-solid fa-heart fa-2xl frame-icon"  class="frame-icon"></i>
-                     </button>
+                     <span>Like</span>
+                     </button></a>
+                     
                      <button
                       class="btn profile-settings-btn"
                      aria-label="profile settings"
                       >
                      <i class="fa-solid fa-message fa-2xl frame-icon" aria-hidden="true"></i>
+                     <span>Send message</span>
                      </button>
-             </div>
+                     
+              </div>
              <div class="like-show">
-                      <i class="fa-solid fa-heart  like-icon"  ></i> Liked by 10,100
+                      <i class="fa-solid fa-heart  like-icon"  ></i> Liked By {{post.likes}}
              </div>
           </div>
+          {% endfor %}
+
           {% comment %} post end {% endcomment %}
         </div>
       </div>

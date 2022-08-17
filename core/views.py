@@ -5,8 +5,10 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse
 import uuid
-from .models import Profile,Post
+from .models import Profile,Post,LikesPost
 from .helpers import verify_account_sendmail,forget_pass_sendmail
+from django.utils.timezone import utc
+
 
 # Create your views here.
 
@@ -189,11 +191,14 @@ def accountSettings(request):
 @login_required(login_url='signin')
 def profile(request):
     profile_obj= Profile.objects.get(user = request.user)
+    posts = Post.objects.all().order_by('posted_at')
     context = {
-        'user_profile' : profile_obj,    
+        'user_profile' : profile_obj,
+        'posts' : posts    
     }
-
+   
     return render(request,'profile.html',context)
+
 
 @login_required(login_url='signin')
 def about(request):
@@ -202,6 +207,7 @@ def about(request):
         'user_profile' : profile_obj,    
     }
     return render(request,'about.html',context)
+
 
 
 
@@ -309,3 +315,15 @@ def upload(request):
         return redirect('profile')
     else:
         return redirect('profile')
+
+@login_required(login_url='signin')
+def like(request):
+    username = request.user.username
+    post_id = request.GET.get('post_id')
+    post = Post.objects.get(id=post_id)
+    isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
+
+    if isLiked == None:
+        new_like = LikesPost.objects.create(like=post,post_id=post_id,username=username)
+        new_like.save()
+        

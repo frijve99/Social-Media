@@ -17,4 +17,5 @@ urlpatterns = [
     path('changePassword', views.changePassword, name = 'changePassword'),
     path('home', views.home, name = 'home'),
     path('upload', views.upload, name='upload'),
+    path('like', views.like, name='like'),
 ]
