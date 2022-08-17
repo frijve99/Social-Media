@@ -36,6 +36,9 @@ class Profile(models.Model):
     bio = models.TextField(blank=True,default='Hey its me')
     profileimg = models.ImageField(upload_to = 'profile_images',default='profilepic.jpg')
     location = models.CharField(max_length=100,blank=True)
+    follower = models.IntegerField(default=0)
+    following = models.IntegerField(default=0)                       
+    posts = models.IntegerField(default=0)
     
 
     def __str__(self) :
@@ -48,12 +51,14 @@ class Profile(models.Model):
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4)
-    user = models.CharField(max_length=100)
+    # only_image = models.BooleanField(default=False)
+    user_post = models.ForeignKey(User,on_delete=models.CASCADE)
+    username = models.CharField(max_length=30,default='user')
     post_image  = models.ImageField(upload_to = 'Post_image')
     caption = models.TextField()
     posted_at = models.DateField(default=timezone.now) 
     likes = models.IntegerField(default=0)
-
+     
     def __str__(self):
-        return self.user
+        return self.username
 

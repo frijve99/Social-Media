@@ -51,9 +51,8 @@
       </div>
       <div class="nav3">
          <div class="dropdown">
-    <button class="btn  " type="button" data-toggle="dropdown"><i
-            class="fa-solid fa-arrow-right-from-bracket fa-2xl change-color"
-          ></i>
+    <button class="btn  " type="button" data-toggle="dropdown">
+          <img src="{{user_profile.profileimg.url}}" alt="" class="bgimg" /> 
     <span ></span></button>
     <ul class="dropdown-menu">
       <li style="font-size: 1.5rem" ><a href="#">delete</a></li>
@@ -119,18 +118,19 @@
       <div class="post">
         <div class="container-2">
           <h1>Create Your Post</h1>
-          <form>
+          <form action="upload" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
             <input
               type="text"
-              name="post"
+              name="caption"
               class="input2"
               placeholder="Whats on your mind?"
             />
             <br />
             <div class="post2">
-              <div class="image-upload">
-                <label for="file-input">
-                  <img src="{% static 'image/gallery.svg' %}" />
+              <div class="image-upload" >
+                <label for="file-input" >                 
+                  <img src="{% static 'image/gallery.svg' %}" class = "pointer" />
                 </label>
                 <input id="file-input" type="file" name="image" />
               </div>
@@ -187,39 +187,6 @@
              </div>
           </div>
           {% comment %} post end {% endcomment %}
-          <div class="container-3">
-            <div class="top-frame">
-             <div class="usericon">
-              <img src="{{user_profile.profileimg.url}}" alt="" class="bgimg" /> 
-              <span class="frame-name">@{{user_profile.username}}</span>
-               <span class="frame-option"><i class="fa-solid fa-ellipsis-vertical"></i></span> 
-               <span class="frame-time">Posted At 2A.M</i></span>        
-            </div>
-            </div>
-             <div class="body-frame">
-                      lorem200
-             </div>
-              <div class="body-image">
-                      <img src="{{user_profile.profileimg.url}}" alt="" class="bdimg"/> 
-             </div>
-             <div class="bottom-frame">
-                      <button
-                      class="btn profile-settings-btn"
-                     aria-label="profile settings"
-                      >
-                     <i class="fa-solid fa-heart fa-xl frame-icon"  class="frame-icon"></i>
-                     </button>
-                     <button
-                      class="btn profile-settings-btn"
-                     aria-label="profile settings"
-                      >
-                     <i class="fa-solid fa-message fa-xl frame-icon" aria-hidden="true"></i>
-                     </button>
-             </div>
-             <div class="like-show">
-                      <i class="fa-solid fa-heart  like-icon"  ></i> Liked by 10,100
-             </div>
-          </div>
         </div>
       </div>
     </main>

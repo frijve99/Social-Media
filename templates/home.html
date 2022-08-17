@@ -1,18 +1,17 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>FAI-Profile</title>
     <link rel="stylesheet" href="{% static 'profile.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
     <script
       src="https://kit.fontawesome.com/a26c7d01cd.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
   </head>
 
   <body>
@@ -52,34 +51,20 @@
       </div>
       <div class="nav3">
         <div class="dropdown">
-          <button
-            class="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <div class="usericon"></div>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-            <a class="dropdown-item" href="{% url 'logout' %}"
-              >Logout <i class="fa-solid fa-arrow-right-from-bracket fa-2xl"></i
-            ></a>
+          <button class="btn" type="button" data-toggle="dropdown">
+            <img src="{{user_profile.profileimg.url}}" alt="" class="bgimg" />
 
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
+            <span></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li style="font-size: 1.5rem"><a href="#">Profile</a></li>
+            <li style="font-size: 1.5rem"><a href="#">Settings</a></li>
+            <li style="font-size: 1.5rem"><a href="#">Logout</a></li>
+          </ul>
         </div>
-        {% comment %}
-        <a class="btn" href="{% url 'logout' %}">
-          <i
-            class="fa-solid fa-arrow-right-from-bracket fa-2xl change-color"
-          ></i>
-        </a>
-        {% endcomment %}
       </div>
     </nav>
+
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

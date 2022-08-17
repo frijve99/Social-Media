@@ -16,5 +16,5 @@ urlpatterns = [
     path('accountSettings', views.accountSettings, name = 'accountSettings'),
     path('changePassword', views.changePassword, name = 'changePassword'),
     path('home', views.home, name = 'home'),
-    
+    path('upload', views.upload, name='upload'),
 ]

@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse
 import uuid
-from .models import Profile
+from .models import Profile,Post
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 
 # Create your views here.
@@ -192,6 +192,7 @@ def profile(request):
     context = {
         'user_profile' : profile_obj,    
     }
+
     return render(request,'profile.html',context)
 
 @login_required(login_url='signin')
@@ -211,7 +212,6 @@ def home(request):
     context = {
         'user_profile' : profile_obj,    
     }
-
     return render(request,'home.html',context)  
 
 #If Password is forgotten
@@ -290,3 +290,22 @@ def changePassword(request):
 
     else:
         return render(request,'changePassword.html')
+
+
+@login_required(login_url='signin')
+def upload(request):
+    user_obj = request.user
+    username = user_obj.username
+    profile_obj = Profile.objects.filter(username = username).first()
+    if request.method == 'POST':
+        # user = request.user
+        image  = request.FILES.get('image')
+        caption = request.POST['caption']
+
+        new_post = Post.objects.create(user_post = user_obj,post_image=image,caption=caption,username=username)
+        new_post.save()
+        profile_obj.posts =profile_obj.posts+1
+        profile_obj.save()
+        return redirect('profile')
+    else:
+        return redirect('profile')
