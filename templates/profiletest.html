@@ -50,63 +50,136 @@
         </div>
       </div>
       <div class="nav3">
-        <div class="dropdown">
-          <button class="btn" type="button" data-toggle="dropdown">
-            <img src="{{user_profile.profileimg.url}}" alt="" class="bgimg" />
-
-            <span></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li style="font-size: 1.5rem"><a href="#">Profile</a></li>
-            <li style="font-size: 1.5rem"><a href="#">Settings</a></li>
-            <li style="font-size: 1.5rem"><a href="#">Logout</a></li>
-          </ul>
-        </div>
+         <div class="dropdown">
+    <button class="btn  " type="button" data-toggle="dropdown">
+          <img src="{{view_profile_object.profileimg.url}}" alt="" class="bgimg" /> 
+    <span ></span></button>
+    <ul class="dropdown-menu">
+      <li style="font-size: 1.5rem" ><a href="/profile/{{view_profile_object.username}}">Profile</a></li>
+      <li style="font-size: 1.5rem"><a href="#">hide</a></li>
+      <li style="font-size: 1.5rem"><a href="#">Logout</a></li>
+    </ul>
+  </div>
+        {% comment %} <a class="btn" href="{% url 'logout' %}">
+          <i
+            class="fa-solid fa-arrow-right-from-bracket fa-2xl change-color"
+          ></i>
+        </a> {% endcomment %}
       </div>
     </nav>
-    {% comment %}
-    <div class="break"></div>
-    {% endcomment %}
-    <!-- <h1>Hello</h1> -->
-    {% comment %}
-    <hr />
-    {% endcomment %}
-    <div class="post">
-      <div class="container-2">
-        <h1>Create Your Post</h1>
-        <form action="{% url 'upload' request.user.username %}" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input
-            type="text"
-            name="caption"
-            class="input2"
-            placeholder="Whats on your mind?"
-          />
-          <br />
-          <div class="post2">
-            <div class="image-upload">
-              <label for="file-input">
-                <img src="{% static 'image/gallery.svg' %}" class="pointer" />
-              </label>
-              <input id="file-input" type="file" name="image" />
-            </div>
-            <button type="submit" class="btn-2">Post</button>
+
+    <header>
+      <div class="container">
+        <div class="profile">
+          <div class="profile-image avatar-xl">
+            <img src="{{view_profile_object.profileimg.url}}" alt="" />
           </div>
-        </form>
+
+          <div class="profile-user-settings">
+            <h1 class="profile-user-name">@{{view_profile_object.username}}</h1>
+            <a href="/about/{{view_profile_object.username}}" >
+              <button class="btn profile-edit-btn"><span style="font-size: 2rem">View About</span></button></a
+            >
+            {% comment %}
+            <button class="btn profile-edit-btn">View About</button>
+            {% endcomment %}
+           {% if view_profile_object.username != request.user.username %}
+            <button
+              class="btn profile-settings-btn"
+              aria-label="profile settings"
+            >
+              <i class="fa-solid fa-user-plus fa-2xl" aria-hidden="true"></i>
+            </button>
+            {% endif %}
+          </div>
+
+          <div class="profile-stats">
+            <ul>
+              <li><span class="profile-stat-count">{{view_profile_object.posts}}</span> posts</li>
+              <li><span class="profile-stat-count">{{view_profile_object.follower}}</span> followers</li>
+              <li><span class="profile-stat-count">{{view_profile_object.following}}</span> following</li>
+            </ul>
+          </div>
+
+          <div class="profile-bio">
+            <p>
+              <span class="profile-real-name">{{user_profile.username}}</span>
+              {{view_profile_object.bio}}
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-     
-   {% comment %} posts div {% endcomment %}
+    </header>
+
+    <br />
+    <main>
+      <div class="break"></div>
+      <!-- <h1>Hello</h1> -->
+      <hr />
+      {% if view_profile_object.username == request.user.username %}
+      <div class="post">
+        <div class="container-2">
+          <h1>Create Your Post</h1>
+          <form action="upload" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input
+              type="text"
+              name="caption"
+              class="input2"
+              placeholder="Whats on your mind?"
+            />
+            <br />
+            <div class="post2">
+              <div class="image-upload" >
+                <label for="file-input" >                 
+                  <img src="{% static 'image/gallery.svg' %}" class = "pointer" />
+                </label>
+                <input id="file-input" type="file" name="image" />
+              </div>
+              <button type="submit" class="btn-2">Post</button>
+            </div>
+          </form>
+        </div>
+        </div>
+      {% else %}
+      <div class="post">
+        <div class="container-2">
+          <h1>Post on {{view_profile_object.username}}'s Timeline</h1>
+          <form action="upload" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input
+              type="text"
+              name="caption"
+              class="input2"
+              placeholder="Whats on your mind?"
+            />
+            <br />
+            <div class="post2">
+              <div class="image-upload" >
+                <label for="file-input" >                 
+                  <img src="{% static 'image/gallery.svg' %}" class = "pointer" />
+                </label>
+                <input id="file-input" type="file" name="image" />
+              </div>
+              <button type="submit" class="btn-2">Post</button>
+            </div>
+          </form>
+        </div>
+        </div>
+
+      {% endif %}
+
+        {% comment %} posts div {% endcomment %}
         <div class="postshow">
         {% comment %} post start {% endcomment %}
          {% for post in posts reversed %}
           <div class="container-3">
             <div class="top-frame">
              <div class="usericon">
-               <a href="/profile/{{post.username}}"> <img src="{{post.profileimg.url}}" alt="" class="bgimg" /> 
+               <a href="/profile/{{post.username}}"> <img src="{{view_profile_object.profileimg.url}}" alt="" class="bgimg" /> 
                </a> 
              <a href="/profile/{{post.username}}">
-              <span class="frame-name">@{{post.username}}</span>
+              <span class="frame-name">@{{view_profile_object.username}}</span>
               </a> 
               <span class="frame-option">
                 <div class="dropdown">
@@ -115,7 +188,7 @@
                <span ></span></button>
                
                <ul class="dropdown-menu">
-                {% if post.username == request.user.username %}
+                {% if view_profile_object.username == request.user.username %}
                <li style="font-size: 1.5rem" ><a href="/deletepost?id={{post.id}}">delete</a></li>
                <li style="font-size: 1.5rem"><a href="#">hide</a></li>
                <li style="font-size: 1.5rem"><a href="#">Edit Caption</a></li>
@@ -166,6 +239,7 @@
           {% comment %} post end {% endcomment %}
         </div>
       </div>
+    </main>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

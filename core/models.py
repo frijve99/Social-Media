@@ -54,11 +54,12 @@ class Post(models.Model):
     # only_image = models.BooleanField(default=False)
     user_post = models.ForeignKey(User,on_delete=models.CASCADE)
     username = models.CharField(max_length=30,default='user')
+    profileimg = models.ImageField(upload_to = 'profile_images',default='profilepic.jpg')
     post_image  = models.ImageField(upload_to = 'Post_image')
     caption = models.TextField()
     posted_at = models.DateTimeField(default=timezone.now) 
     likes = models.IntegerField(default=0)
-     
+    
     def __str__(self):
         return self.username
 

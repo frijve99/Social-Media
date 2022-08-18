@@ -57,7 +57,9 @@
 
     <div class="div1">
       <div class="divx">
-        About @<a href="{% url 'profile' %}">{{user_profile.username}}</a>
+        About @<a href="/profile/{{user_profile.username}}"
+          >{{user_profile.username}}</a
+        >
       </div>
     </div>
 
@@ -103,10 +105,12 @@
       <div class="bor">Joined Fai At:</div>
       <div class="det1">{{user_profile.created_at}}</div>
     </div>
+    {% if request.user.username == user_profile.username%}
     <div class="sub">
       <a class="butn" href="{% url 'accountSettings' %}">
         Account Settings <i class="fa-solid fa-screwdriver-wrench"></i
       ></a>
     </div>
+    {% endif %}
   </body>
 </html>

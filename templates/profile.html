@@ -154,7 +154,7 @@
                 <i class="fa-solid fa-ellipsis fa-2xl"></i>
                <span ></span></button>
                <ul class="dropdown-menu">
-               <li style="font-size: 1.5rem" ><a href="#">delete</a></li>
+               <li style="font-size: 1.5rem" ><a href="/deletepost?id={{post.id}}">delete</a></li>
                <li style="font-size: 1.5rem"><a href="#">hide</a></li>
                <li style="font-size: 1.5rem"><a href="#">repost</a></li>
                </ul>
@@ -173,12 +173,15 @@
              <div class="bottom-frame">
                  <a href="/like?id={{post.id}}">
                       <button
+                      id = "like"
                       class="btn profile-settings-btn"
                      aria-label="profile settings"
                       >
                      <i class="fa-solid fa-heart fa-2xl frame-icon"  class="frame-icon"></i>
                      <span>Like</span>
                      </button></a>
+
+                     
                      
                      <button
                       class="btn profile-settings-btn"

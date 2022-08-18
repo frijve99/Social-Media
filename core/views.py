@@ -3,7 +3,7 @@ from django.contrib.auth.models import User,auth
 from django.contrib.auth.decorators import login_required #
 from django.contrib.auth import authenticate, login,logout 
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 import uuid
 from .models import Profile,Post,LikesPost
 from .helpers import verify_account_sendmail,forget_pass_sendmail
@@ -192,17 +192,37 @@ def accountSettings(request):
 def profile(request):
     profile_obj= Profile.objects.get(user = request.user)
     posts = Post.objects.all().order_by('posted_at')
+    like = LikesPost.objects.all()
     context = {
         'user_profile' : profile_obj,
-        'posts' : posts    
+        'posts' : posts,   
+        'like' : like 
     }
    
     return render(request,'profile.html',context)
 
 
 @login_required(login_url='signin')
-def about(request):
-    profile_obj= Profile.objects.get(user = request.user)
+def profiletest(request,name):
+    user_object = request.user
+    view_user_object = User.objects.filter(username = name)
+    view_profile_object = Profile.objects.filter(username = name).first()
+    print(view_profile_object)
+    print(name)
+    posts = Post.objects.filter(username = name)
+    context = {
+        'view_user_object' : view_user_object,
+        'user_object' : user_object,   
+        'view_profile_object' : view_profile_object,
+        'posts' : posts, 
+    }
+ 
+    return render(request,'profiletest.html',context)
+
+
+@login_required(login_url='signin')
+def about(request,name):
+    profile_obj= Profile.objects.get(username = name)
     context = {
         'user_profile' : profile_obj,    
     }
@@ -215,9 +235,11 @@ def about(request):
 @login_required(login_url='signin')
 def home(request):
     profile_obj = Profile.objects.get(user = request.user)
+    posts = Post.objects.all()
     context = {
-        'user_profile' : profile_obj,    
-    }
+        'user_profile' : profile_obj,
+        'posts' : posts   
+    } 
     return render(request,'home.html',context)  
 
 #If Password is forgotten
@@ -299,7 +321,7 @@ def changePassword(request):
 
 
 @login_required(login_url='signin')
-def upload(request):
+def upload(request,name):
     user_obj = request.user
     username = user_obj.username
     profile_obj = Profile.objects.filter(username = username).first()
@@ -308,22 +330,48 @@ def upload(request):
         image  = request.FILES.get('image')
         caption = request.POST['caption']
 
-        new_post = Post.objects.create(user_post = user_obj,post_image=image,caption=caption,username=username)
+        new_post = Post.objects.create(user_post = user_obj,post_image=image,caption=caption,username=username,profileimg = profile_obj.profileimg)
         new_post.save()
         profile_obj.posts =profile_obj.posts+1
         profile_obj.save()
-        return redirect('profile')
+        return redirect('home')
     else:
-        return redirect('profile')
+        return redirect('home')
+
+def isliked(post_id,username):
+    isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
+    if isLiked == None:
+        return False
+    else:
+        return True
+    
 
 @login_required(login_url='signin')
 def like(request):
     username = request.user.username
-    post_id = request.GET.get('post_id')
+    post_id = request.GET.get('id')
     post = Post.objects.get(id=post_id)
     isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
 
     if isLiked == None:
         new_like = LikesPost.objects.create(like=post,post_id=post_id,username=username)
         new_like.save()
-        
+        post.likes = post.likes+1
+        post.save()
+    else:
+        unlike  = LikesPost.objects.filter(username = username,post_id=post_id).first()
+        unlike.delete()
+        post.likes = post.likes-1
+        post.save()
+    return redirect('profile')
+
+@login_required(login_url='signin')
+def deletepost(request):
+    username = request.user.username
+    post_id = request.GET.get('id')
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    profile_obj = Profile.objects.filter(username = username).first()
+    profile_obj.posts =profile_obj.posts-1
+    profile_obj.save()
+    return redirect('profile')
