@@ -334,9 +334,9 @@ def upload(request,name):
         new_post.save()
         profile_obj.posts =profile_obj.posts+1
         profile_obj.save()
-        return redirect('home')
+        return redirect(f'/profile/{name}')
     else:
-        return redirect('home')
+        return redirect(f'/profile/{name}')
 
 def isliked(post_id,username):
     isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
@@ -374,4 +374,4 @@ def deletepost(request):
     profile_obj = Profile.objects.filter(username = username).first()
     profile_obj.posts =profile_obj.posts-1
     profile_obj.save()
-    return redirect('profile')
+    return redirect(f'/profile/{username}')

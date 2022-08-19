@@ -95,6 +95,32 @@
         </form>
       </div>
     </div>
+    <div class="follow">
+          <div class="followperson">
+               <h2>You might know them</h2>
+               {% for post in posts %}
+
+             <div class="container-4">
+            <div class="top-frame">
+             <div class="usericon">
+               <a href="/profile/{{post.username}}"> <img src="{{user_profile.profileimg.url}}" alt="" class="bgimg" /> 
+               </a> 
+               
+             <a href="/profile/{{post.username}}">
+              <span class="frame-fullname">Firoz Mahmud Rizvi</span>
+              </a> 
+              <span class="frame-option2">
+               <button type="submit" class="btn-2">Follow</button>
+              </span>
+              {% load tz %}
+               <span class="frame-usname">@frijve99 {{post.posted_at}}</i></span>        
+              </div>
+             </div>
+          </div>
+          {% endfor %}
+           </div>
+    </div>
+
      
    {% comment %} posts div {% endcomment %}
         <div class="postshow">
