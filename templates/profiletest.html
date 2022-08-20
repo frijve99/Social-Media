@@ -1,4 +1,5 @@
 {% load static %}
+{% load post_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -216,7 +217,13 @@
                      aria-label="profile settings"
                       >
                      <i class="fa-solid fa-heart fa-2xl frame-icon"  class="frame-icon"></i>
-                     <span>Like</span>
+                     {% with post.id|isLiked:request.user.username as liked %}
+                      {% if liked %}
+                      <span>Unlike</span>
+                      {% else %}
+                      <span>Like</span>
+                     {% endif %}
+                     {% endwith %}
                      </button></a>
 
                      

@@ -270,7 +270,7 @@ a:link {
   /* text-align: center; */
 }
 .followperson {
-  width: 25%;
+  width: 380px;
   /* max-width: 600px; */
   /* border: 2px solid rgb(10, 10, 10); */
   /* height: 100px; */
@@ -327,8 +327,22 @@ a:link {
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
   background: #e0e0e0;
 }
+.container-3-home {
+  width: 60%;
+  max-width: 600px;
+  /* height: 100px; */
+  /* height: 200px; */
+  /* height: 200px; */
+  position: relative;
+  margin-top: 20px;
+  margin-left: 35%;
+  margin-bottom: 10px;
+  /* position: absolute; */
+  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  background: #e0e0e0;
+}
 .container-4 {
-  width: 100%;
+  width: 380px;
   max-width: 600px;
   /* height: 100px; */
   /* height: 200px; */
@@ -504,4 +518,24 @@ form img {
 }
 .like-icon {
   color: black !important;
+}
+
+@media only screen and (max-width: 1500px) {
+  .container-3-home {
+    width: 60%;
+    max-width: 600px;
+    /* height: 100px; */
+    /* height: 200px; */
+    /* height: 200px; */
+    position: relative;
+    margin-top: 20px;
+    margin-left: 20%;
+    margin-bottom: 10px;
+    /* position: absolute; */
+    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    background: #e0e0e0;
+  }
+  .follow {
+    width: 85vw;
+  }
 }

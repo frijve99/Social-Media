@@ -8,6 +8,9 @@ import uuid
 from .models import Profile,Post,LikesPost
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
+from django import template
+
+
 
 
 # Create your views here.
@@ -236,9 +239,12 @@ def about(request,name):
 def home(request):
     profile_obj = Profile.objects.get(user = request.user)
     posts = Post.objects.all()
+    likes = LikesPost.objects.all()
+    print(likes)
     context = {
         'user_profile' : profile_obj,
-        'posts' : posts   
+        'posts' : posts,
+        'likes' : likes   
     } 
     return render(request,'home.html',context)  
 
@@ -334,16 +340,17 @@ def upload(request,name):
         new_post.save()
         profile_obj.posts =profile_obj.posts+1
         profile_obj.save()
-        return redirect(f'/profile/{name}')
+        return redirect(f'/{name}')
     else:
-        return redirect(f'/profile/{name}')
+        return redirect(f'/{name}')
 
-def isliked(post_id,username):
-    isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
-    if isLiked == None:
-        return False
-    else:
-        return True
+# @register.filter(name='isLiked')
+# def isliked(post_id,username):
+#     isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
+#     if isLiked == None:
+#         return False
+#     else:
+#         return True
     
 
 @login_required(login_url='signin')

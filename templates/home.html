@@ -1,4 +1,5 @@
 {% load static %}
+{% load post_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,7 +14,7 @@
       crossorigin="anonymous"
     ></script>
   </head>
-
+ {% comment %} {% load isliked %} {% endcomment %}
   <body>
     <nav>
       <div class="nav0">
@@ -71,6 +72,7 @@
     {% comment %}
     <hr />
     {% endcomment %}
+   
     <div class="post">
       <div class="container-2">
         <h1>Create Your Post</h1>
@@ -126,7 +128,7 @@
         <div class="postshow">
         {% comment %} post start {% endcomment %}
          {% for post in posts reversed %}
-          <div class="container-3">
+          <div class="container-3-home">
             <div class="top-frame">
              <div class="usericon">
                <a href="/profile/{{post.username}}"> <img src="{{post.profileimg.url}}" alt="" class="bgimg" /> 
@@ -169,7 +171,15 @@
                      aria-label="profile settings"
                       >
                      <i class="fa-solid fa-heart fa-2xl frame-icon"  class="frame-icon"></i>
-                     <span>Like</span>
+                     
+                      {% with post.id|isLiked:request.user.username as liked %}
+                      {% if liked %}
+                      <span>Unlike</span>
+                      {% else %}
+                      <span>Like</span>
+                     {% endif %}
+                     {% endwith %}
+                     
                      </button></a>
 
                      
