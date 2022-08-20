@@ -85,12 +85,23 @@
             <button class="btn profile-edit-btn">View About</button>
             {% endcomment %}
            {% if view_profile_object.username != request.user.username %}
-            <button
-              class="btn profile-settings-btn"
+           <a href="/follow?name={{view_profile_object.username}}" >
+             <button
+              
               aria-label="profile settings"
+              class = "btn-2"
             >
-              <i class="fa-solid fa-user-plus fa-2xl" aria-hidden="true"></i>
+            {% with view_profile_object.username|isFollowed:request.user.username as followed %}
+               {% if followed %}
+              {% comment %} <i class="fa-solid fa-user-plus fa-2xl" aria-hidden="true"></i> {% endcomment %}
+              <h4>Following</h4>
+              {% else %}
+              {% comment %} <i class="fa-solid fa-user-plus fa-2xl" aria-hidden="true"></i> {% endcomment %}
+              <h3>Follow</h3>
+              {% endif %}
+            {% endwith %}
             </button>
+          </a>
             {% endif %}
           </div>
 

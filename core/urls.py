@@ -6,7 +6,7 @@ urlpatterns = [
     path('' , views.home , name='home'),
     path('signin' , views.signin , name='signin'),
     path('signup' , views.signup , name='signup'),
-    path('profile' , views.profile , name='profile'),
+    # path('profile' , views.profile , name='profile'),
     path('welcomeSettings' , views.welcomeSettings , name='welcomeSettings'),
     path('forgetPassword' , views.forgetPassword , name='forgetPassword'),
     path('resetPassword/<token>/', views.resetPassword, name = 'resetPassword'),
@@ -21,4 +21,6 @@ urlpatterns = [
     path('deletepost', views.deletepost, name='deletepost'),
     path('profile/<name>' , views.profiletest , name='profiletest'),
     path('about/<name>' , views.about , name='about'),
+    path('follow' , views.follow , name='follow'),
+
 ]

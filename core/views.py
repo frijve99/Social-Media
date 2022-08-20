@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse
 import uuid
-from .models import Profile,Post,LikesPost
+from .models import Follow, Profile,Post,LikesPost
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
@@ -49,7 +49,7 @@ def verify_email(request,token):
       #auto login and direct to welcome Setting Page
       username = user_obj.username
       password = user_obj.password
-      print(password)
+    #   print(password)
     #   user = us
 
     #   if user is not None:
@@ -210,8 +210,8 @@ def profiletest(request,name):
     user_object = request.user
     view_user_object = User.objects.filter(username = name)
     view_profile_object = Profile.objects.filter(username = name).first()
-    print(view_profile_object)
-    print(name)
+    # print(view_profile_object)
+    # print(name)
     posts = Post.objects.filter(username = name)
     context = {
         'view_user_object' : view_user_object,
@@ -240,7 +240,7 @@ def home(request):
     profile_obj = Profile.objects.get(user = request.user)
     posts = Post.objects.all()
     likes = LikesPost.objects.all()
-    print(likes)
+    # print(likes)
     context = {
         'user_profile' : profile_obj,
         'posts' : posts,
@@ -340,17 +340,10 @@ def upload(request,name):
         new_post.save()
         profile_obj.posts =profile_obj.posts+1
         profile_obj.save()
-        return redirect(f'/{name}')
+        return redirect(f'/profile/{username}')
     else:
-        return redirect(f'/{name}')
+        return redirect(f'/profile/{username}')
 
-# @register.filter(name='isLiked')
-# def isliked(post_id,username):
-#     isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
-#     if isLiked == None:
-#         return False
-#     else:
-#         return True
     
 
 @login_required(login_url='signin')
@@ -370,7 +363,7 @@ def like(request):
         unlike.delete()
         post.likes = post.likes-1
         post.save()
-    return redirect('profile')
+    return redirect('home')
 
 @login_required(login_url='signin')
 def deletepost(request):
@@ -382,3 +375,28 @@ def deletepost(request):
     profile_obj.posts =profile_obj.posts-1
     profile_obj.save()
     return redirect(f'/profile/{username}')
+
+
+@login_required(login_url='signin')
+def follow(request):
+    follower_name = request.user.username
+    following_name = request.GET.get('name')
+    follower_profile = Profile.objects.filter(username = follower_name).first()
+    following_profile = Profile.objects.filter(username = following_name).first()
+    isfollowed = Follow.objects.filter(follower_username=follower_name,following_username=following_name).first()
+
+    if isfollowed == None:
+        flw = Follow.objects.create(follower = follower_profile,follower_username=follower_name,following_username=following_name)
+        follower_profile.following = follower_profile.following+1
+        following_profile.follower = following_profile.follower+1
+        flw.save()
+        follower_profile.save()
+        following_profile.save()
+        return redirect(f'profile/{following_name}')
+    else:
+        isfollowed.delete()
+        follower_profile.following = follower_profile.following-1
+        following_profile.follower = following_profile.follower-1
+        follower_profile.save()
+        following_profile.save()
+        return redirect(f'profile/{following_name}')

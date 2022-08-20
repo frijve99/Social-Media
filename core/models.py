@@ -74,3 +74,12 @@ class LikesPost(models.Model):
     def __str__(self):
         return self.username
 
+
+class Follow(models.Model):
+    follower =  models.ForeignKey(Profile,on_delete=models.CASCADE,blank=True,
+        null=True)
+    follower_username = models.CharField(max_length=30)
+    following_username = models.CharField(max_length=30)
+    
+    def __str__(self):
+        return self.following_username

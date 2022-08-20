@@ -281,8 +281,8 @@ a:link {
   margin-left: 28%;
   margin-bottom: 10px;
   position: absolute;
-  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-  background: #e0e0e0;
+  /* box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  background: #e0e0e0; */
   margin-left: 77%;
 }
 .postshow {
@@ -537,5 +537,40 @@ form img {
   }
   .follow {
     width: 85vw;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container-3-home {
+    width: 55%;
+    max-width: 600px;
+    /* height: 100px; */
+    /* height: 200px; */
+    /* height: 200px; */
+    position: relative;
+    margin-top: 20px;
+    margin-left: 10%;
+    margin-bottom: 10px;
+    /* position: absolute; */
+    /* box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    background: #e0e0e0; */
+  }
+  .follow {
+    width: 75vw;
+  }
+  .followperson {
+    width: 300px;
+    /* max-width: 600px; */
+    /* border: 2px solid rgb(10, 10, 10); */
+    /* height: 100px; */
+    /* height: 200px; */
+    height: 400px;
+    /* position: relative; */
+    margin-top: -8px;
+    margin-left: 28%;
+    margin-bottom: 10px;
+    position: absolute;
+    /* box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    background: #e0e0e0; */
+    margin-left: 77%;
   }
 }

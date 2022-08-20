@@ -131,8 +131,10 @@
           <div class="container-3-home">
             <div class="top-frame">
              <div class="usericon">
-               <a href="/profile/{{post.username}}"> <img src="{{post.profileimg.url}}" alt="" class="bgimg" /> 
+              {% with post.id|get_by_post as post_profile %}
+               <a href="/profile/{{post.username}}"> <img src="{{post_profile.profileimg.url}}" alt="" class="bgimg" /> 
                </a> 
+               {% endwith %}
              <a href="/profile/{{post.username}}">
               <span class="frame-name">@{{post.username}}</span>
               </a> 
