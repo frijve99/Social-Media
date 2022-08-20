@@ -9,6 +9,7 @@ from .models import Follow, Profile,Post,LikesPost
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
+from itertools import chain
 
 
 
@@ -238,12 +239,26 @@ def about(request,name):
 @login_required(login_url='signin')
 def home(request):
     profile_obj = Profile.objects.get(user = request.user)
-    posts = Post.objects.all()
+    # posts = Post.objects.all()
     likes = LikesPost.objects.all()
     # print(likes)
+     
+    user_following_list = []
+    posts = []
+
+    user_following = Follow.objects.filter(follower_username = profile_obj.username)
+
+    for users in user_following:
+        # user_following_list.append(users.following_username)
+        post_list = Post.objects.filter(username = users.following_username)
+        posts.append(post_list)
+
+    post = list(chain(*posts))
+
+
     context = {
         'user_profile' : profile_obj,
-        'posts' : posts,
+        'posts' : post,
         'likes' : likes   
     } 
     return render(request,'home.html',context)  
