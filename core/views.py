@@ -211,12 +211,15 @@ def profile(request):
 @login_required(login_url='signin')
 def profiletest(request,name):
     user_object = request.user
+    username = request.user.username
+    profile_obj = Profile.objects.filter(username = username).first()
     view_user_object = User.objects.filter(username = name)
     view_profile_object = Profile.objects.filter(username = name).first()
     # print(view_profile_object)
     # print(name)
     posts = Post.objects.filter(username = name)
     context = {
+        'profile_obj' : profile_obj,
         'view_user_object' : view_user_object,
         'user_object' : user_object,   
         'view_profile_object' : view_profile_object,
@@ -462,3 +465,67 @@ def search(request):
            } 
     return render(request,'search.html',context)  
         
+def follower(request,name):
+    user_obj = request.user
+    username = user_obj.username
+    profile_obj = Profile.objects.filter(username = username).first()
+    found=True
+    follower_list = []
+    view_profile_obj = Profile.objects.filter(username = name).first()
+    if view_profile_obj.follower == 0:
+        found = False
+    else:
+        get_follower  = Follow.objects.filter(following_username=name)
+        lists = []
+    
+        for prf in get_follower:
+            x = Profile.objects.filter(username=prf.follower_username)
+            # print(prf.follower_username)
+            lists.append(x)
+
+        
+        follower_list = list(chain(*lists))
+
+
+    context={
+
+        'user_profile' : profile_obj,
+         'name' : name,
+         'found':found,
+        'follower_list' : follower_list
+    }
+
+    return render(request,'follower.html',context)
+
+
+def following(request,name):
+    user_obj = request.user
+    username = user_obj.username
+    profile_obj = Profile.objects.filter(username = username).first()
+    found=True
+    follower_list = []
+    view_profile_obj = Profile.objects.filter(username = name).first()
+    if view_profile_obj.following == 0:
+        found = False
+    else:
+        get_follower  = Follow.objects.filter(follower_username=name)
+        lists = []
+    
+        for prf in get_follower:
+            x = Profile.objects.filter(username=prf.following_username)
+            # print(prf.follower_username)
+            lists.append(x)
+
+        
+        follower_list = list(chain(*lists))
+
+
+    context={
+
+        'user_profile' : profile_obj,
+         'name' : name,
+         'found':found,
+        'follower_list' : follower_list
+    }
+
+    return render(request,'following.html',context)

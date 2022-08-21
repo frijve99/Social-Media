@@ -56,10 +56,10 @@
       <div class="nav3">
          <div class="dropdown">
     <button class="btn  " type="button" data-toggle="dropdown">
-          <img src="{{view_profile_object.profileimg.url}}" alt="" class="bgimg" /> 
+          <img src="{{profile_obj.profileimg.url}}" alt="" class="bgimg" /> 
     <span ></span></button>
     <ul class="dropdown-menu">
-      <li style="font-size: 1.5rem" ><a href="/profile/{{view_profile_object.username}}">Profile</a></li>
+      <li style="font-size: 1.5rem" ><a href="/profile/{{profile_obj.username}}">Profile</a></li>
       <li style="font-size: 1.5rem"><a href="/accountSettings">Settings</a></li>
       <li style="font-size: 1.5rem"><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
@@ -111,8 +111,8 @@
           <div class="profile-stats">
             <ul>
               <li><span class="profile-stat-count">{{view_profile_object.posts}}</span> posts</li>
-              <li><span class="profile-stat-count">{{view_profile_object.follower}}</span> followers</li>
-              <li><span class="profile-stat-count">{{view_profile_object.following}}</span> following</li>
+              <li><a href="/follower/{{view_profile_object.username}}"><span class="profile-stat-count">{{view_profile_object.follower}}</span> followers</a></li>
+              <li><a href="/following/{{view_profile_object.username}}"><span class="profile-stat-count">{{view_profile_object.following}}</span> following</a></li>
             </ul>
           </div>
 
