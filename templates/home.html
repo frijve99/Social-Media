@@ -44,12 +44,15 @@
           </li>
         </ul>
       </div>
-      <div class="nav2">
+      <form action="/search" method="POST" >
+        {% csrf_token %}
+      <div class="nav2">        
         <div class="search">
-          <img src="{% static 'image/search.png' %}" alt="logo not found" />
-          <input type="text" placeholder="search" />
+          <input type="text" placeholder="search" name="search" required/>        
         </div>
+        <button type="submit" class="btn-2"><i class="fa-solid fa-magnifying-glass fa-2xl change-color"></i></button>            
       </div>
+      </form>
       <div class="nav3">
         <div class="dropdown">
           <button class="btn" type="button" data-toggle="dropdown">
@@ -58,9 +61,9 @@
             <span></span>
           </button>
           <ul class="dropdown-menu">
-            <li style="font-size: 1.5rem"><a href="#">Profile</a></li>
-            <li style="font-size: 1.5rem"><a href="#">Settings</a></li>
-            <li style="font-size: 1.5rem"><a href="#">Logout</a></li>
+            <li style="font-size: 1.5rem"><a href="/profile/{{user_profile.username}}">Profile</a></li>
+            <li style="font-size: 1.5rem"><a href="/accountSettings">Settings</a></li>
+            <li style="font-size: 1.5rem"><a href="{% url 'logout' %}">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -100,22 +103,24 @@
     <div class="follow">
           <div class="followperson">
                <h2>You might know them</h2>
-               {% for post in posts %}
+               {% for suggest in suggestion %}
 
              <div class="container-4">
             <div class="top-frame">
              <div class="usericon">
-               <a href="/profile/{{post.username}}"> <img src="{{user_profile.profileimg.url}}" alt="" class="bgimg" /> 
+               <a href="/profile/{{suggest.username}}"> <img src="{{suggest.profileimg.url}}" alt="" class="bgimg" /> 
                </a> 
                
-             <a href="/profile/{{post.username}}">
-              <span class="frame-fullname">Firoz Mahmud Rizvi</span>
-              </a> 
+             <a href="/profile/{{suggest.username}}">
+              <span class="frame-fullname">{{suggest.firstname}} {{suggest.lastname}}</span>
+              </a>
+              <a href="/profile/{{suggest.username}}"> 
               <span class="frame-option2">
-               <button type="submit" class="btn-2">Follow</button>
+               <button type="submit" class="btn-2">Profile</button>
               </span>
+              </a>
               {% load tz %}
-               <span class="frame-usname">@frijve99 {{post.posted_at}}</i></span>        
+               <span class="frame-usname">{{suggest.username}}</i></span>        
               </div>
              </div>
           </div>
@@ -147,9 +152,11 @@
                <ul class="dropdown-menu">
                 {% if post.username == request.user.username %}
                <li style="font-size: 1.5rem" ><a href="/deletepost?id={{post.id}}">delete</a></li>
-               <li style="font-size: 1.5rem"><a href="#">hide</a></li>
+               <li style="font-size: 1.5rem"><a href="#">Download Image</a></li>
                <li style="font-size: 1.5rem"><a href="#">Edit Caption</a></li>
                {% else %}
+               <li style="font-size: 1.5rem"><a href="{{post.post_image.url}}"
+                download >Download Image</a></li>
                <li style="font-size: 1.5rem" ><a href="#">Report</a></li>
                {% endif %}
                </ul>
@@ -163,7 +170,8 @@
                       {{post.caption}}
              </div>
              <div class="body-image">
-                      <img src="{{post.post_image.url}}" alt="" class="bdimg"/> 
+                      <a href="{{post.post_image.url}}">
+                      <img src="{{post.post_image.url}}" alt="" class="bdimg"/> </a>
              </div>
              <div class="bottom-frame">
                  <a href="/like?id={{post.id}}">

@@ -44,12 +44,15 @@
           </li>
         </ul>
       </div>
-      <div class="nav2">
+       <form action="/search" method="POST" >
+        {% csrf_token %}
+      <div class="nav2">        
         <div class="search">
-          <img src="{% static 'image/search.png' %}" alt="logo not found" />
-          <input type="text" placeholder="search" />
+          <input type="text" placeholder="search" name="search" required/>        
         </div>
+        <button type="submit" class="btn-2"><i class="fa-solid fa-magnifying-glass fa-2xl change-color"></i></button>            
       </div>
+      </form>
       <div class="nav3">
          <div class="dropdown">
     <button class="btn  " type="button" data-toggle="dropdown">
@@ -57,8 +60,8 @@
     <span ></span></button>
     <ul class="dropdown-menu">
       <li style="font-size: 1.5rem" ><a href="/profile/{{view_profile_object.username}}">Profile</a></li>
-      <li style="font-size: 1.5rem"><a href="#">hide</a></li>
-      <li style="font-size: 1.5rem"><a href="#">Logout</a></li>
+      <li style="font-size: 1.5rem"><a href="/accountSettings">Settings</a></li>
+      <li style="font-size: 1.5rem"><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
   </div>
         {% comment %} <a class="btn" href="{% url 'logout' %}">
@@ -218,7 +221,8 @@
                       {{post.caption}}
              </div>
              <div class="body-image">
-                      <img src="{{post.post_image.url}}" alt="" class="bdimg"/> 
+                      <a href="{{post.post_image.url}}">
+                      <img src="{{post.post_image.url}}" alt="" class="bdimg"/> </a>
              </div>
              <div class="bottom-frame">
                  <a href="/like?id={{post.id}}">

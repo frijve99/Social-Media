@@ -313,6 +313,16 @@ a:link {
   background: #e0e0e0;
   /* border: 1px solid rgba(10, 10, 10, 0.105); */
 }
+.container-head {
+  width: 60%;
+  max-width: 600px;
+
+  /* height: 200px; */
+  /* height: 200px; */
+  margin-top: 20px;
+  margin-left: 35%;
+  /* border: 1px solid rgba(10, 10, 10, 0.105); */
+}
 .container-3 {
   width: 60%;
   max-width: 600px;
@@ -350,6 +360,20 @@ a:link {
   position: relative;
   margin-top: 20px;
   /* margin-left: 35%; */
+  margin-bottom: 5px;
+  /* position: absolute; */
+  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  background: #e0e0e0;
+}
+.container-search {
+  width: 410px;
+  /* max-width: 600px; */
+  /* height: 100px; */
+  /* height: 200px; */
+  /* height: 200px; */
+  position: relative;
+  margin-top: 90px;
+  margin-left: 35%;
   margin-bottom: 5px;
   /* position: absolute; */
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;

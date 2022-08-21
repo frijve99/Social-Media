@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib.auth.decorators import login_required #
@@ -10,6 +11,7 @@ from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
 from itertools import chain
+import random
 
 
 
@@ -243,23 +245,38 @@ def home(request):
     likes = LikesPost.objects.all()
     # print(likes)
      
-    user_following_list = []
+    user_following_username = []
     posts = []
 
     user_following = Follow.objects.filter(follower_username = profile_obj.username)
 
     for users in user_following:
-        # user_following_list.append(users.following_username)
+        user_following_username .append(users.following_username)
         post_list = Post.objects.filter(username = users.following_username)
         posts.append(post_list)
 
     post = list(chain(*posts))
 
+    #suggestion
+    suggestion_list = []
+    suggestion = []
+    all_user = Profile.objects.all()
+    # print(all_user)
+    for u in all_user:
+        print("user")
+        print(u)
+        if u not in list(user_following) and u.username != profile_obj.username:
+            s_list = Profile.objects.filter(username = u.username)
+            suggestion_list.append(s_list)
+    random.shuffle(suggestion_list)
+    suggestion = list(chain(*suggestion_list))
+
 
     context = {
         'user_profile' : profile_obj,
         'posts' : post,
-        'likes' : likes   
+        'likes' : likes ,
+        'suggestion' : suggestion[:4]  
     } 
     return render(request,'home.html',context)  
 
@@ -415,3 +432,33 @@ def follow(request):
         follower_profile.save()
         following_profile.save()
         return redirect(f'profile/{following_name}')
+
+
+@login_required(login_url='signin')
+def search(request):
+    user_obj = request.user
+    username = user_obj.username
+    profile_obj = Profile.objects.filter(username = username).first()
+    context = {}
+    if request.method == 'POST':
+        search_name = request.POST['search']
+        search_profile= Profile.objects.filter(username = search_name).first()
+        # print(search_profile.firstname)
+        if search_profile == None:
+            context = {
+           'user_profile' : profile_obj,
+           'Found' : False
+            }
+        else:
+            context = {
+           'user_profile' : profile_obj,
+           'search_profile' : search_profile,
+           'Found' : True
+           }
+    else :
+         context = {
+           'user_profile' : profile_obj,
+           'Found' : False
+           } 
+    return render(request,'search.html',context)  
+        

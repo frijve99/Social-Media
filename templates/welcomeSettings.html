@@ -40,7 +40,7 @@
                     <div class="col-md-7">
                       <h4 class="mb-1">Welcome {{user_profile.username}}</h4>
                       <p class="small mb-3">
-                        <span class="badge badge-dark">New York, USA</span>
+                        <span class="badge badge-dark"></span>
                       </p>
                     </div>
                   </div>
@@ -58,6 +58,7 @@
             name="firstname"
             class="input"
             value="{{user_profile.firstname}}"
+            required
           />
       </div>
        <div class="in">
@@ -68,12 +69,13 @@
             name="lastname"
             class="input"
             value="{{user_profile.lastname}}"
+            required
           />
       </div>
       <div class="in">
           <label for="country">Country</label>
           <br>
-          <input type="text" name="country" class="input" value="{{user_profile.location}}"  >
+          <input type="text" name="country" class="input" value="{{user_profile.location}}"  required>
       </div>
        
        <div class="in">
