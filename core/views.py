@@ -4,7 +4,7 @@ from django.contrib.auth.models import User,auth
 from django.contrib.auth.decorators import login_required #
 from django.contrib.auth import authenticate, login,logout 
 from django.contrib import messages
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import uuid
 from .models import Follow, Profile,Post,LikesPost,Notification
 from .helpers import verify_account_sendmail,forget_pass_sendmail
@@ -81,8 +81,16 @@ def signup(request):
         
         if password == password2:
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email Taken')
-                return redirect('signup')
+                user= User.objects.filter(email=email).first()
+                user_profile = Profile.objects.filter(email=email).first()
+                if user.is_active== True:
+                    messages.info(request, 'Email Taken')
+                    return redirect('signup')
+                else:
+                    verify_token = user_profile.auth_token
+                    verify_account_sendmail(user.email,verify_token)
+                    messages.info(request,'An email has been sent again')
+                    return redirect('signup')
             elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username Taken')
                 return redirect('signup')
@@ -91,7 +99,7 @@ def signup(request):
                 user.is_active=False
                 user.save()
                 verify_token = str(uuid.uuid4())
-                profile_obj = Profile.objects.create(user = user , username=username,auth_token = verify_token,id_user = user.id)
+                profile_obj = Profile.objects.create(user = user , username=username,auth_token = verify_token,id_user = user.id,email=email)
                 profile_obj.save()
                 verify_account_sendmail(user.email,verify_token)
                 messages.info(request,'An email has been sent')               
@@ -149,7 +157,8 @@ def welcomeSettings(request):
         profile_obj.forget_pass_token = forget_pass_token
 
         profile_obj.save()
-        return redirect('profile')
+        username = profile_obj.username
+        return redirect(f'profile/{username}')
     else:  
         return render(request,'welcomeSettings.html',context)
 
@@ -390,7 +399,8 @@ def like(request):
     username = request.user.username
     post_id = request.GET.get('id')
     post = Post.objects.filter(id=post_id).first()
-    post_user_profile = Profile.objects.filter(username = post.username).first()
+    post_username = post.username
+    post_user_profile = Profile.objects.filter(username = post_username).first()
     isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
 
     if isLiked == None:
@@ -409,7 +419,10 @@ def like(request):
         unlike.delete()
         post.likes = post.likes-1
         post.save()
-    return redirect('home')
+    # return HttpResponseRedirect(request.path_info)
+    # return redirect(request.path)
+    # return redirect('home')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='signin')
 def deletepost(request):

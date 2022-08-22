@@ -194,7 +194,13 @@ nav {
   outline: none;
   border: 0;
 }
-
+.bgimg1 {
+  /* margin-top: 5px; */
+  width: 40px;
+  height: 40px;
+  /* object-fit: fill; */
+  border-radius: 50%;
+}
 :root {
   font-size: 10px;
 }

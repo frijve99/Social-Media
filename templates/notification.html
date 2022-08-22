@@ -32,9 +32,11 @@
             </a>
           </li>
           <li>
-            <button class="btn">
-              <img src="{% static 'image/notification.png' %}" alt="" />
-            </button>
+            <a href="/notification">
+              <button class="btn">
+                <img src="{% static 'image/notification.png' %}" alt="" />
+              </button>
+            </a>
           </li>
           <li>
             <button class="btn">
@@ -96,7 +98,16 @@
         </h1>
         {% endif %}
       </div>
-      {% endfor %} {% else %}
+      {% endfor %}
+      <div>
+        <style>
+          h4 {
+            color: red;
+          }
+        </style>
+        <h4>Note: This Notification will be deleted soon</h4>
+      </div>
+      {% else %}
       <div class="container-head">
         <h4>You Have No New Notification</h4>
       </div>

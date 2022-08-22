@@ -29,9 +29,11 @@
             </a>
           </li>
           <li>
-            <button class="btn">
-              <img src="{% static 'image/notification.png' %}" alt="" />
-            </button>
+            <a href="/notification">
+              <button class="btn">
+                <img src="{% static 'image/notification.png' %}" alt="" />
+              </button>
+            </a>
           </li>
           <li>
             <button class="btn">
@@ -39,19 +41,6 @@
             </button>
           </li>
         </ul>
-      </div>
-      <div class="nav2">
-        <div class="search">
-          <img src="{% static 'image/search.png' %}" alt="logo not found" />
-          <input type="text" placeholder="search" />
-        </div>
-      </div>
-      <div class="nav3">
-        <a class="btn" href="{% url 'logout' %}">
-          <i
-            class="fa-solid fa-arrow-right-from-bracket fa-2xl change-color"
-          ></i>
-        </a>
       </div>
     </nav>
 
