@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse
 import uuid
-from .models import Follow, Profile,Post,LikesPost
+from .models import Follow, Profile,Post,LikesPost,Notification
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
@@ -217,7 +217,7 @@ def profiletest(request,name):
     view_profile_object = Profile.objects.filter(username = name).first()
     # print(view_profile_object)
     # print(name)
-    posts = Post.objects.filter(username = name)
+    posts = Post.objects.filter(username = name).order_by('posted_at')
     context = {
         'profile_obj' : profile_obj,
         'view_user_object' : view_user_object,
@@ -259,6 +259,7 @@ def home(request):
         posts.append(post_list)
 
     post = list(chain(*posts))
+    post.sort(key=lambda x: x.posted_at)
 
     #suggestion
     suggestion_list = []
@@ -266,8 +267,6 @@ def home(request):
     all_user = Profile.objects.all()
     # print(all_user)
     for u in all_user:
-        print("user")
-        print(u)
         if u not in list(user_following) and u.username != profile_obj.username:
             s_list = Profile.objects.filter(username = u.username)
             suggestion_list.append(s_list)
@@ -372,6 +371,11 @@ def upload(request,name):
         caption = request.POST['caption']
 
         new_post = Post.objects.create(user_post = user_obj,post_image=image,caption=caption,username=username,profileimg = profile_obj.profileimg)
+        text = "Has Liked Your "
+        type = "Like"
+        new_not = Notification.objects.create(new_notification = profile_obj,user_from = username,user_to = profile_obj.username,type = type , text = text)
+        profile_obj.notifications = profile_obj.notifications+1
+        new_not.save()
         new_post.save()
         profile_obj.posts =profile_obj.posts+1
         profile_obj.save()
@@ -385,11 +389,18 @@ def upload(request,name):
 def like(request):
     username = request.user.username
     post_id = request.GET.get('id')
-    post = Post.objects.get(id=post_id)
+    post = Post.objects.filter(id=post_id).first()
+    post_user_profile = Profile.objects.filter(username = post.username).first()
     isLiked = LikesPost.objects.filter(username=username,post_id = post_id).first()
 
     if isLiked == None:
         new_like = LikesPost.objects.create(like=post,post_id=post_id,username=username)
+        text = "Has Liked Your "
+        type = "Like"
+        new_not = Notification.objects.create(new_notification = post_user_profile,user_from = username,user_to = post.username,type = type , text = text,post_id = post_id)
+        post_user_profile.notifications = post_user_profile.notifications+1
+        post_user_profile.save()
+        new_not.save()
         new_like.save()
         post.likes = post.likes+1
         post.save()
@@ -425,6 +436,11 @@ def follow(request):
         follower_profile.following = follower_profile.following+1
         following_profile.follower = following_profile.follower+1
         flw.save()
+        text = "Has Followed You"
+        type = "Follow"
+        new_not = Notification.objects.create(new_notification = following_profile,user_from = follower_name,user_to = following_name,type = type , text = text)
+        following_profile.notifications = following_profile.notifications+1
+        new_not.save()
         follower_profile.save()
         following_profile.save()
         return redirect(f'profile/{following_name}')
@@ -529,3 +545,33 @@ def following(request,name):
     }
 
     return render(request,'following.html',context)
+
+def post(request,id):
+    user_obj = request.user
+    username = user_obj.username
+    profile_obj = Profile.objects.filter(username = username).first()
+    post_show = Post.objects.filter(id = id).first()
+    context = {
+        'user_profile' : profile_obj,
+        'post' : post_show
+    }
+    return render(request,'post.html',context) 
+
+def notification(request):
+    user_obj = request.user
+    username = user_obj.username
+    profile_obj = Profile.objects.filter(username = username).first()
+    found=True
+    if profile_obj.notifications ==0:
+        found = False
+    new_notification = Notification.objects.filter(user_to=username)
+    context = {
+        'user_profile' : profile_obj,
+        'notifications': new_notification,
+        'found':found
+    }
+    for noti in new_notification:
+        noti.delete()
+    profile_obj.notifications = 0
+    profile_obj.save()
+    return render(request,'notification.html',context)

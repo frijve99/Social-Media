@@ -33,6 +33,10 @@ def get_by_post(post_id):
     
     profile_obj = Profile.objects.filter(username=username).first()
     username = profile_obj.username
-    print(profile_obj)
+    return profile_obj
+
+@register.filter(name='get_by_name')
+def get_by_name(username):   
+    profile_obj = Profile.objects.filter(username=username).first()
     return profile_obj
 

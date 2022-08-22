@@ -25,5 +25,6 @@ urlpatterns = [
     path('search' , views.search , name='search'),
     path('follower/<name>' , views.follower , name='follower'),
     path('following/<name>' , views.following , name='following'),
-
+    path('post/<id>' , views.post , name='post'),
+    path('notification' , views.notification , name='notification'),
 ]

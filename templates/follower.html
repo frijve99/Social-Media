@@ -43,16 +43,14 @@
           </li>
         </ul>
       </div>
-      <form action="" method="POST">
+      <form action="/search" method="POST" >
         {% csrf_token %}
-        <div class="nav2">
-          <div class="search">
-            <input type="text" placeholder="search" name="search" required />
-          </div>
-          <button type="submit" class="btn-2">
-            <i class="fa-solid fa-magnifying-glass fa-2xl change-color"></i>
-          </button>
+      <div class="nav2">        
+        <div class="search">
+          <input type="text" placeholder="search" name="search" required/>        
         </div>
+        <button type="submit" class="btn-2"><i class="fa-solid fa-magnifying-glass fa-2xl change-color"></i></button>            
+      </div>
       </form>
       <div class="nav3">
         <div class="dropdown">

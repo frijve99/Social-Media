@@ -149,17 +149,29 @@
                 <i class="fa-solid fa-ellipsis fa-2xl"></i>
                <span ></span></button>
                
-               <ul class="dropdown-menu">
+              <ul class="dropdown-menu">
                 {% if post.username == request.user.username %}
-               <li style="font-size: 1.5rem" ><a href="/deletepost?id={{post.id}}">delete</a></li>
-               <li style="font-size: 1.5rem"><a href="#">Download Image</a></li>
-               <li style="font-size: 1.5rem"><a href="#">Edit Caption</a></li>
+                <li style="font-size: 1.5rem"><a href="{{post.post_image.url}}" download>Download Image</a></li>
+                 <li style="font-size: 1.5rem"><a href="#" onclick="copyText()">Edit Caption</a></li>
+                 <li style="font-size: 1.5rem"><a href="http://127.0.0.1:8000/post/{{post.id}}"  onclick="copyURI(event)">Copy Post Link</a></li>
+               <li style="font-size: 1.5rem" ><a href="/deletepost?id={{post.id}}">delete</a></li>         
                {% else %}
                <li style="font-size: 1.5rem"><a href="{{post.post_image.url}}"
                 download >Download Image</a></li>
+                <li style="font-size: 1.5rem"><a href="http://127.0.0.1:8000/post/{{post.id}}"  onclick="copyURI(event)">Copy Post Link</a></li>
                <li style="font-size: 1.5rem" ><a href="#">Report</a></li>
                {% endif %}
                </ul>
+               <script>
+        function copyURI(evt) {
+    evt.preventDefault();
+    navigator.clipboard.writeText(evt.target.getAttribute('href')).then(() => {
+      /* clipboard successfully set */
+    }, () => {
+      /* clipboard write failed */
+    });
+}
+    </script>
                </div>
               </span>
               {% load tz %}

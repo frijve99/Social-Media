@@ -39,6 +39,7 @@ class Profile(models.Model):
     follower = models.IntegerField(default=0)
     following = models.IntegerField(default=0)                       
     posts = models.IntegerField(default=0)
+    notifications = models.IntegerField(default=0)
     
 
     def __str__(self) :
@@ -83,3 +84,16 @@ class Follow(models.Model):
     
     def __str__(self):
         return self.following_username
+
+class Notification(models.Model):
+    new_notification = models.ForeignKey(Profile,on_delete=models.CASCADE,blank=True,
+        null=True)
+    user_from = models.CharField(max_length=30)
+    user_to = models.CharField(max_length=30)
+    type = models.CharField(max_length=30)
+    post_id = models.CharField(max_length=100)
+    text = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.user_to
+

@@ -374,10 +374,24 @@ a:link {
   position: relative;
   margin-top: 90px;
   margin-left: 35%;
-  margin-bottom: 5px;
+  margin-bottom: -60px;
   /* position: absolute; */
   box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
   background: #e0e0e0;
+}
+.container-notification {
+  width: 50%;
+  /* max-width: 600px; */
+  /* height: 100px; */
+  /* height: 200px; */
+  min-height: 50px;
+  position: relative;
+  margin-top: 90px;
+  margin-left: 35%;
+  margin-bottom: -65px;
+  /* position: absolute; */
+  background: #e0e0e0;
+  text-align: center;
 }
 
 .input2 {
