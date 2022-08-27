@@ -97,3 +97,13 @@ class Notification(models.Model):
     def __str__(self):
         return self.user_to
 
+class Comment(models.Model):
+    new_comment = models.ForeignKey(Post,on_delete=models.CASCADE,blank=True,
+        null=True)
+    post_id = models.CharField(max_length=100)
+    username = models.CharField(max_length=30)
+    text = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.post_id
+

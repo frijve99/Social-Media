@@ -9,6 +9,8 @@
     <title>FAI-Profile</title>
     <link rel="stylesheet" href="{% static 'profile.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script
       src="https://kit.fontawesome.com/a26c7d01cd.js"
       crossorigin="anonymous"
@@ -197,26 +199,64 @@
                       <img src="{{post.post_image.url}}" alt="" class="bdimg"/> </a>
              </div>
              <div class="bottom-frame">
-                 <a href="/like?id={{post.id}}">
                       <button
                       id = "like"
                       class="btn profile-settings-btn"
                      aria-label="profile settings"
+                     onclick="like('{{post.id}}')"
                       >
                      <i class="fa-solid fa-heart fa-2xl frame-icon"  class="frame-icon"></i>
-                     
-                      {% with post.id|isLiked:request.user.username as liked %}
-                      {% if liked %}
-                      <span>Unlike</span>
-                      {% else %}
-                      <span>Like</span>
-                     {% endif %}
-                     {% endwith %}
-                     
-                     </button></a>
+                     <span id="{{post.id}}"></span>                     
+                     </button>
+                     <script>                       
+                            loadlike() 
+                            
+                        function like(status){
+                        console.log(status)
+                           $.ajax({
+                             type: 'GET',
+                             url: "{% url 'like' %}",
+                             data: {'id':status},
+                             success: function (data) {
+                               console.log(data) 
+                               if(data.value==1){
+                               document.getElementById(status).innerHTML ="Unlike";
+                              }else{
+                                 document.getElementById(status).innerHTML ="like";
+                               }
+                               status = status+"/likedby";
+                               console.log(status)
+                                document.getElementById(status).innerHTML =data.likedby;                       
+                             },
+                             error: function () {
+                               alert('error')
+                             },
+                           })
+                         }
 
-                     
-                     
+                       function loadlike() {
+                        var status= "{{post.id}}"
+                        console.log(status)
+                           $.ajax({
+                             type: 'GET',
+                             url: "{% url 'Liked' %}",
+                             data: {'id':status},
+                             success: function (data) {
+                              console.log(data)
+                               if(data.value==1){
+                               document.getElementById('{{post.id}}').innerHTML ="Unlike";
+                              }else{
+                                 document.getElementById('{{post.id}}').innerHTML ="like";
+                               }
+                               document.getElementById('{{post.id}}/likedby').innerHTML =data.likedby;                            
+                             },
+                             error: function () {
+                               alert('error')
+                             },
+                           })
+                         }
+                       
+                     </script>
                      <button
                       class="btn profile-settings-btn"
                      aria-label="profile settings"
@@ -227,19 +267,19 @@
                      
               </div>
              <div class="like-show">
-                      <i class="fa-solid fa-heart  like-icon"  ></i> Liked By {{post.likes}}
+                      <i class="fa-solid fa-heart  like-icon"  ></i>  Liked By <span id="{{post.id}}/likedby"></span>
              </div>
+              <form>
+                <input class="inputcom" type="text" placeholder="Enter Email" name="email" required>
+                <button type="submit" class="btn-2" id="postcomment">Comment</button>
+              </form>
           </div>
           {% endfor %}
 
           {% comment %} post end {% endcomment %}
         </div>
       </div>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
+    
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"

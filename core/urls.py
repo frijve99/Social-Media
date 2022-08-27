@@ -27,4 +27,6 @@ urlpatterns = [
     path('following/<name>' , views.following , name='following'),
     path('post/<id>' , views.post , name='post'),
     path('notification' , views.notification , name='notification'),
+    path('Liked' , views.Liked , name='Liked'),
+    path('comment' , views.comment , name='comment'),
 ]

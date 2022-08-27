@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import uuid
-from .models import Follow, Profile,Post,LikesPost,Notification
+from .models import Follow, Profile,Post,LikesPost,Notification,Comment
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
@@ -414,15 +414,22 @@ def like(request):
         new_like.save()
         post.likes = post.likes+1
         post.save()
+        value = 1
     else:
         unlike  = LikesPost.objects.filter(username = username,post_id=post_id).first()
         unlike.delete()
         post.likes = post.likes-1
         post.save()
+        value = 0
+    likedby = post.likes
+    context={
+        'value':value,
+        'likedby':likedby
+     }
     # return HttpResponseRedirect(request.path_info)
     # return redirect(request.path)
     # return redirect('home')
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return JsonResponse(context)
 
 @login_required(login_url='signin')
 def deletepost(request):
@@ -588,3 +595,26 @@ def notification(request):
     profile_obj.notifications = 0
     profile_obj.save()
     return render(request,'notification.html',context)
+
+def Liked(request):
+     username = request.user.username
+     post_id = request.GET.get('id')
+     print(post_id)
+     isliked = LikesPost.objects.filter(username=username,post_id = post_id).first()
+     post = Post.objects.filter(id=post_id).first()
+     likedby = post.likes
+     print(isliked)
+     if isliked == None:
+        value = 0
+     else:
+        value = 1
+     context={
+        'value':value,
+        'likedby':likedby
+     }
+     print(value)
+     return JsonResponse(context)
+
+
+def comment(request):
+    pass
