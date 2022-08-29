@@ -40,6 +40,13 @@ nav {
   /* object-fit: fill; */
   border-radius: 50%;
 }
+.commentimg {
+  /* margin-top: 5px; */
+  width: 30px;
+  height: 30px;
+  /* object-fit: fill; */
+  border-radius: 50%;
+}
 
 .logo {
   width: 160px;
@@ -434,6 +441,26 @@ a:link {
   font-weight: bold;
   cursor: pointer;
   border-radius: 3px;
+}
+
+.comment-text {
+  background-color: white;
+  font-size: 1.8rem;
+  margin-left: 7%;
+}
+
+.showcomment {
+  /* border: 4px dashed rgb(6, 6, 209); */
+  margin-top: auto;
+  position: relative;
+}
+.comment-name {
+  left: 8%;
+  /* bottom: 2%; */
+  top: 3px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
 }
 
 .image-upload {

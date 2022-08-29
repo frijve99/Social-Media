@@ -599,11 +599,11 @@ def notification(request):
 def Liked(request):
      username = request.user.username
      post_id = request.GET.get('id')
-     print(post_id)
+    #  print(post_id)
      isliked = LikesPost.objects.filter(username=username,post_id = post_id).first()
      post = Post.objects.filter(id=post_id).first()
      likedby = post.likes
-     print(isliked)
+    #  print(isliked)
      if isliked == None:
         value = 0
      else:
@@ -612,9 +612,23 @@ def Liked(request):
         'value':value,
         'likedby':likedby
      }
-     print(value)
+    #  print(value)
      return JsonResponse(context)
 
 
+
 def comment(request):
-    pass
+     
+     if request.method == 'POST':
+        username = request.user.username
+        text = request.POST['text']
+        post_id = request.POST['id']
+        # print(post_id)
+        profile_obj = Profile.objects.filter(username = username).first()
+        post = Post.objects.filter(id = post_id).first()
+        new_comment = Comment.objects.create(new_comment=post,post_id=post_id,username=username,text=text)
+        new_comment.save()
+     context={
+        'value':0,
+     }
+     return JsonResponse(context)

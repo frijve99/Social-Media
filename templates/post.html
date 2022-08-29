@@ -156,7 +156,21 @@
              <div class="like-show">
                       <i class="fa-solid fa-heart  like-icon"  ></i> Liked By {{post.likes}}
              </div>
+             <form>
+                <input class="inputcom" type="text" placeholder="Write Something" name="comment" required>
+                <button type="submit" class="btn-2" id="postcomment">Comment</button>
+              </form>
+               <div class="showcomment">
+                     <a href="/profile/{{post.username}}"> <img src="{{user_profile.profileimg.url}}" alt="" class="commentimg" /></a> 
+                     <a href="/profile/{{post.username}}">
+              <span class="comment-name">@{{post.username}}</span>            
+              </a> 
+               <p class="comment-text">It is a long established fact that a .
+                </p>
+               </div>
+               
           </div>
+
 
           {% comment %} post end {% endcomment %}
         </div>
