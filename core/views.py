@@ -571,9 +571,12 @@ def post(request,id):
     username = user_obj.username
     profile_obj = Profile.objects.filter(username = username).first()
     post_show = Post.objects.filter(id = id).first()
+    comment = Comment.objects.filter(post_id=id)
+    print(comment)
     context = {
         'user_profile' : profile_obj,
-        'post' : post_show
+        'post' : post_show,
+        'comments':comment
     }
     return render(request,'post.html',context) 
 

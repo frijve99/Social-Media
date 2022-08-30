@@ -160,14 +160,18 @@
                 <input class="inputcom" type="text" placeholder="Write Something" name="comment" required>
                 <button type="submit" class="btn-2" id="postcomment">Comment</button>
               </form>
+              {% for comment in comments %}
                <div class="showcomment">
-                     <a href="/profile/{{post.username}}"> <img src="{{user_profile.profileimg.url}}" alt="" class="commentimg" /></a> 
-                     <a href="/profile/{{post.username}}">
-              <span class="comment-name">@{{post.username}}</span>            
+                {% with comment.username|get_by_name as comment_profile %}
+                     <a href="/profile/{{comment.username}}"> <img src="{{comment_profile.profileimg.url}}" alt="" class="commentimg" /></a> 
+                     <a href="/profile/{{comment.username}}">
+                  {% endwith %}
+              <span class="comment-name">@{{comment.username}}</span>            
               </a> 
-               <p class="comment-text">It is a long established fact that a .
+               <p class="comment-text">{{comment.text}}
                 </p>
                </div>
+               {% endfor %}
                
           </div>
 

@@ -283,6 +283,8 @@
           <script>
             $(document).on('submit','#comment-form',function(e){
               e.preventDefault();
+              pid = $('#comment-postid').val();
+              console.log(pid)
                $.ajax({
                      type: 'POST',
                      url: "{% url 'comment' %}",
@@ -291,13 +293,14 @@
                          id:$('#comment-postid').val(),
                          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
                      },
-                     success: function (data) {
+                     success: function (data) {                     
                       console.log(data) 
                       },
                      error: function () {
                        alert('error')
                      },
                    })
+                   document.getElementById("comment-form").reset();                 
             })
            
           </script>
