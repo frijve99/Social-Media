@@ -233,6 +233,29 @@
                              },
                            })
                          }
+                         function commentsub(postid){
+                              ids = "#comment"+postid;
+                              te = "#text"+postid;
+                              console.log(ids) 
+                               $.ajax({
+                     type: 'POST',
+                     url: "{% url 'comment' %}",
+                     data: {
+                         text:$(te).val(),
+                         id:$(ids).val(),
+                         csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                     },
+                     success: function (data) {                     
+                      console.log(data) 
+                      },
+                     error: function () {
+                       alert('error')
+                     },
+                   })
+                   cmd = "comment-form"+postid;
+                  document.getElementById(cmd).reset();                
+            }
+                         
                          
 
                        function loadlike() {
@@ -270,38 +293,20 @@
              <div class="like-show">
                       <i class="fa-solid fa-heart  like-icon"  ></i>  Liked By <span id="{{post.id}}/likedby"></span>
              </div>
-              <form  method="POST" id="comment-form" >
+              <form  method="POST" id="comment-form{{post.id}}" >
                 {% csrf_token %}
-                <input class="inputcom" type="hidden"  name="comment" id="comment-postid" value="{{post.id}}">
-                <input class="inputcom" type="text"  name="comment" id="comment" placeholder="Write Something" required>
-                <input type="submit" class="btn-2" id="postcomment" value="Comment">
+                <input class="inputcom" type="hidden"  name="comment" id="comment{{post.id}}" value="{{post.id}}">
+                <input class="inputcom" type="text"  name="comment" id="text{{post.id}}" placeholder="Write Something" required>
+                <input type="button" class="btn-2" id="postcomment" value="Comment" onclick="event.preventDefault(); commentsub('{{post.id}}')">
                 {% comment %} <button type="submit" class="btn-2" id="postcomment">Comment</button> {% endcomment %}
               </form>
               <div> <a href="post/{{post.id}}">Show All Comment</a></div>
           </div>
           {% endfor %}
           <script>
-            $(document).on('submit','#comment-form',function(e){
-              e.preventDefault();
-              pid = $('#comment-postid').val();
-              console.log(pid)
-               $.ajax({
-                     type: 'POST',
-                     url: "{% url 'comment' %}",
-                     data: {
-                         text:$('#comment').val(),
-                         id:$('#comment-postid').val(),
-                         csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                     },
-                     success: function (data) {                     
-                      console.log(data) 
-                      },
-                     error: function () {
-                       alert('error')
-                     },
-                   })
-                   document.getElementById("comment-form").reset();                 
-            })
+
+            
+           
            
           </script>
 
