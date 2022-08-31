@@ -431,8 +431,25 @@ a:link {
   background-color: #fff;
   border: 5px solid #ddd;
 }
+.center {
+  /* margin: auto; */
+  font-size: 1.5rem;
+  margin-left: 103%;
+  margin-top: -59px;
+  z-index: 100;
+  width: 50%;
+  padding: 20px;
+  background: #d5e4e7;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.hideform {
+  display: none;
+}
+
 .btn-2 {
-  width: 15%;
+  /* width: 15%; */
+  min-width: 70px;
   background-color: #000000;
   border: 1px solid #3897f0;
   padding: 8px 12px;
@@ -441,6 +458,18 @@ a:link {
   font-weight: bold;
   cursor: pointer;
   border-radius: 3px;
+}
+.btn-3 {
+  /* width: 15%; */
+  min-width: 37px;
+  background-color: #f01212;
+  border: 1px solid #3897f0;
+  padding: 8px 12px;
+  /* margin: 10px 10px; */
+  color: rgb(9, 9, 9);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 13px;
 }
 
 .comment-text {

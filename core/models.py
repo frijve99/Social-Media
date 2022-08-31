@@ -107,3 +107,11 @@ class Comment(models.Model):
     def __str__(self):
         return self.post_id
 
+
+class Message(models.Model):
+    text = models.CharField(max_length=300)
+    from_username = models.CharField(max_length=30)
+    to_username = models.CharField(max_length=30)
+    sends_at = models.DateTimeField(default=timezone.now)
+
+

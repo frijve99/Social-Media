@@ -208,10 +208,9 @@
                      <i class="fa-solid fa-heart fa-2xl frame-icon"  class="frame-icon"></i>
                      <span id="{{post.id}}"></span>                     
                      </button>
-                     <script>                       
-                            loadlike() 
-                            
-                        function like(status){
+          <script>                       
+              loadlike()                                     
+                    function like(status){
                         console.log(status)
                            $.ajax({
                              type: 'GET',
@@ -233,31 +232,51 @@
                              },
                            })
                          }
-                         function commentsub(postid){
+                      function commentsub(postid){
                               ids = "#comment"+postid;
                               te = "#text"+postid;
                               console.log(ids) 
-                               $.ajax({
-                     type: 'POST',
-                     url: "{% url 'comment' %}",
-                     data: {
-                         text:$(te).val(),
-                         id:$(ids).val(),
-                         csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                     },
-                     success: function (data) {                     
-                      console.log(data) 
-                      },
-                     error: function () {
-                       alert('error')
-                     },
-                   })
-                   cmd = "comment-form"+postid;
-                  document.getElementById(cmd).reset();                
-            }
+                          $.ajax({
+                             type: 'POST',
+                             url: "{% url 'comment' %}",
+                             data: {
+                                 text:$(te).val(),
+                                 id:$(ids).val(),
+                                 csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                             },
+                             success: function (data)         {                     
+                              console.log(data) 
+                              },
+                             error: function () {
+                               alert('error')
+                             },
+                           })
+                           cmd = "comment-form"+postid;
+                          document.getElementById(cmd).reset();                
+                        }
+                        
+                      function sendMessageText(postid){
+                          ids = "#send_message_username"+postid;
+                          te = "#send_message_text"+postid;
+                          $.ajax({
+                             type: 'POST',
+                             url: "{% url 'sendMessage' %}",
+                             data: {
+                                 text:$(te).val(),
+                                 name:$(ids).val(),
+                                 csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                             },
+                             success: function (data)         {                     
+                              console.log(data) 
+                              },
+                             error: function () {
+                               alert('error')
+                             },
+                           })
+                           cmd = "message-form"+postid;
+                          document.getElementById(cmd).reset();
+                       }
                          
-                         
-
                        function loadlike() {
                         var status= "{{post.id}}"
                         console.log(status)
@@ -280,14 +299,27 @@
                            })
                          }
                        
-                     </script>
+          </script>
                      <button
                       class="btn profile-settings-btn"
                      aria-label="profile settings"
+                     id = "show"
+                     onclick = "openMessage('{{post.id}}')"
                       >
                      <i class="fa-solid fa-message fa-2xl frame-icon" aria-hidden="true"></i>
                      <span>Send message</span>
                      </button>
+                     <div class="center hideform" id="message{{post.id}}">
+    <button id="close" class="btn-3" style="float: right;" onclick="closeMessage('{{post.id}}')">X</button>
+    <form method="POST" id="message-form{{post.id}}">
+      {% csrf_token %}
+        Send Message to {{post.username}}:<br>
+        <input type="hidden"  name="name" id="send_message_username{{post.id}}" value="{{post.username}}">
+        <input type="text" name="text" placeholder="Type Something" id="send_message_text{{post.id}}" class="inputcom">
+        <br>
+        <input type="button" class="btn-2" id="sendM" value="Send" onclick="event.preventDefault(); sendMessageText('{{post.id}}')">
+    </form>
+</div>
                      
               </div>
              <div class="like-show">
@@ -303,17 +335,13 @@
               <div> <a href="post/{{post.id}}">Show All Comment</a></div>
           </div>
           {% endfor %}
-          <script>
-
-            
-           
-           
-          </script>
+         
 
           {% comment %} post end {% endcomment %}
         </div>
       </div>
-    
+        <script src="{% static 'test.js' %}"></script>
+
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"

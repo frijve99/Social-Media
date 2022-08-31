@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import uuid
-from .models import Follow, Profile,Post,LikesPost,Notification,Comment
+from .models import Follow, Profile,Post,LikesPost,Notification,Comment,Message
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
@@ -635,3 +635,17 @@ def comment(request):
         'value':0,
      }
      return JsonResponse(context)
+
+
+def sendMessage(request):
+    if request.method == 'POST':
+        from_username = request.user.username
+        text = request.POST['text']
+        to_username = request.POST['name']
+        new_message = Message.objects.create(from_username=from_username,to_username=to_username,text=text)
+        new_message.save()
+
+    context={
+        'value':0,
+     }
+    return JsonResponse(context)

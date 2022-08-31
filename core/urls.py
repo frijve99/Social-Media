@@ -29,4 +29,5 @@ urlpatterns = [
     path('notification' , views.notification , name='notification'),
     path('Liked' , views.Liked , name='Liked'),
     path('comment' , views.comment , name='comment'),
+    path('sendMessage' , views.sendMessage , name='sendMessage'),
 ]
