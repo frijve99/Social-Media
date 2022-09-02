@@ -6,12 +6,13 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import uuid
-from .models import Follow, Profile,Post,LikesPost,Notification,Comment,Message
+from .models import Follow, Profile,Post,LikesPost,Notification,Comment,Message,Messenger
 from .helpers import verify_account_sendmail,forget_pass_sendmail
 from django.utils.timezone import utc
 from django import template
 from itertools import chain
 import random
+from operator import attrgetter
 
 
 
@@ -463,6 +464,8 @@ def follow(request):
         new_not.save()
         follower_profile.save()
         following_profile.save()
+        new_messenger = Messenger.objects.create(username=follower_profile.username,friend=following_profile.username)
+        new_messenger.save()
         return redirect(f'profile/{following_name}')
     else:
         isfollowed.delete()
@@ -572,7 +575,7 @@ def post(request,id):
     profile_obj = Profile.objects.filter(username = username).first()
     post_show = Post.objects.filter(id = id).first()
     comment = Comment.objects.filter(post_id=id)
-    print(comment)
+    # print(comment)
     context = {
         'user_profile' : profile_obj,
         'post' : post_show,
@@ -636,6 +639,17 @@ def comment(request):
      }
      return JsonResponse(context)
 
+def chat(request):
+    username = request.user.username
+    friendlist = Messenger.objects.filter(username=username)
+    for friend in friendlist:
+        print(friend.friend)
+
+    context = {
+        'friendlist':friendlist
+    }
+    return render(request,'chat.html',context) 
+
 
 def deleteComment(request):
     pass
@@ -646,13 +660,30 @@ def sendMessage(request):
         from_username = request.user.username
         text = request.POST['text']
         to_username = request.POST['name']
+        print(to_username)
         new_message = Message.objects.create(from_username=from_username,to_username=to_username,text=text)
         new_message.save()
         prf_obj = Profile.objects.filter(username=to_username).first()
         prf_obj.messages = prf_obj.messages+1
-        prf_obj.save( )
+        prf_obj.save()
 
     context={
-        'value':0,
+        'value':1,
      }
     return JsonResponse(context)
+
+def getMessage(request):
+    to_username = request.user.username
+    from_username = request.GET.get('id')
+    list1 = Message.objects.filter(from_username=from_username,to_username=to_username).values()
+    list2 = Message.objects.filter(from_username=to_username,to_username=from_username).values()
+    # result_list = sorted(
+    # chain(list1, list2),
+    # key=attrgetter('sends_at'))
+    # messages = list(result_list)
+    # print(result_list)
+    # context={
+    #     'value':0,
+    #     'messages':result_list
+    #  }
+    return JsonResponse({"messages":list(list2)})

@@ -30,4 +30,6 @@ urlpatterns = [
     path('Liked' , views.Liked , name='Liked'),
     path('comment' , views.comment , name='comment'),
     path('sendMessage' , views.sendMessage , name='sendMessage'),
+    path('chat' , views.chat , name='chat'),
+    path('getMessage' , views.getMessage , name='getMessage'),
 ]

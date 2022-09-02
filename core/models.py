@@ -115,4 +115,11 @@ class Message(models.Model):
     to_username = models.CharField(max_length=30)
     sends_at = models.DateTimeField(default=timezone.now)
 
+class Messenger(models.Model):
+     username = models.CharField(max_length=30)
+     friend = models.CharField(max_length=30)
+
+     def __str__(self):
+        return self.username
+
 
