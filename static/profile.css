@@ -442,6 +442,10 @@ a:link {
   background: #d5e4e7;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.deletecomment {
+  font-size: 1rem;
+  margin-left: 15%;
+}
 
 .hideform {
   display: none;
@@ -476,6 +480,8 @@ a:link {
   /* background-color: white; */
   font-size: 1.8rem;
   margin-left: 7%;
+  width: 90%;
+  overflow-wrap: break-word;
 }
 
 .showcomment {
@@ -566,6 +572,16 @@ form img {
   font-size: 2.3rem;
   /* font-weight: bold; */
   position: relative;
+  /* border: 4px solid rgb(11, 243, 35); */
+  /* display: inline; */
+}
+.comment-option {
+  left: 93%;
+  /* width: 100%; */
+  bottom: 53%;
+  /* font-size: 2.3rem; */
+  /* font-weight: bold; */
+  position: absolute;
   /* border: 4px solid rgb(11, 243, 35); */
   /* display: inline; */
 }

@@ -40,6 +40,7 @@ class Profile(models.Model):
     following = models.IntegerField(default=0)                       
     posts = models.IntegerField(default=0)
     notifications = models.IntegerField(default=0)
+    messages = models.IntegerField(default=0)
     
 
     def __str__(self) :

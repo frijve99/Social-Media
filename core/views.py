@@ -637,6 +637,10 @@ def comment(request):
      return JsonResponse(context)
 
 
+def deleteComment(request):
+    pass
+
+
 def sendMessage(request):
     if request.method == 'POST':
         from_username = request.user.username
@@ -644,6 +648,9 @@ def sendMessage(request):
         to_username = request.POST['name']
         new_message = Message.objects.create(from_username=from_username,to_username=to_username,text=text)
         new_message.save()
+        prf_obj = Profile.objects.filter(username=to_username).first()
+        prf_obj.messages = prf_obj.messages+1
+        prf_obj.save( )
 
     context={
         'value':0,
