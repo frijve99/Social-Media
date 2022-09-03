@@ -1,4 +1,5 @@
 from multiprocessing import context
+from unittest import result
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib.auth.decorators import login_required #
@@ -13,6 +14,7 @@ from django import template
 from itertools import chain
 import random
 from operator import attrgetter
+from operator import itemgetter
 
 
 
@@ -677,6 +679,10 @@ def getMessage(request):
     from_username = request.GET.get('id')
     list1 = Message.objects.filter(from_username=from_username,to_username=to_username).values()
     list2 = Message.objects.filter(from_username=to_username,to_username=from_username).values()
+    l1 = list(list1)
+    l2 = list(list2)
+    result_list = l1+l2
+    newlist = sorted(result_list, key=lambda k: k['sends_at']) 
     # result_list = sorted(
     # chain(list1, list2),
     # key=attrgetter('sends_at'))
@@ -686,4 +692,4 @@ def getMessage(request):
     #     'value':0,
     #     'messages':result_list
     #  }
-    return JsonResponse({"messages":list(list2)})
+    return JsonResponse({"messages":newlist})

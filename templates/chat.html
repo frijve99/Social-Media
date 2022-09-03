@@ -126,10 +126,11 @@
                    url : "{% url 'getMessage' %}",
                    data: {'id':username},
                    success: function(response){                    
-                    $("#viewchat").empty();                   
+                    $("#viewchat").empty(); 
+                    console.log(response)                  
                       for (var message in response.messages){
                         
-                        addMessage(response.messages[message].text,username)
+                        addMessage(response.messages[message].text,response.messages[message].from_username,response.messages[message].sends_at)
                       }
                    
                    },
@@ -140,9 +141,14 @@
         },1000);
         }
 
-        function addMessage(text,username){
-             var temp = "<div class='message incoming'><h5 id='message-username'>"+text+"</h5><p id='message' ></p></div>"
+        function addMessage(text,username,time){
+             
+             var dt  = new Date(time);
+             date = dt.toString().substring(0,25);
+             var temp = "<div class='message incoming'><h4 id='message-username'>"+username+"</h4><p id='message' >"+text+"</p><span class='date'>Send at "+date+"</span></div>"
              $("#viewchat").append(temp);
+             var objDiv = document.getElementById("viewchat");
+             objDiv.scrollTop = objDiv.scrollHeight;
         }
     </script>
 
