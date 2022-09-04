@@ -32,14 +32,27 @@
             </a>
           </li>
           <li>
+            <a href="/notification">
             <button class="btn">
+              <style>
+            h7{
+              color: red;
+            }
+          </style>
+              {% if user_profile.notifications > 0 %}
+              <h7>new</h7>
+              {% endif %}
               <img src="{% static 'image/notification.png' %}" alt="" />
+              
             </button>
+          </a>
           </li>
           <li>
+             <a href="/chat">
             <button class="btn">
               <img src="{% static 'image/message.png' %}" alt="" />
             </button>
+          </a>
           </li>
         </ul>
       </div>
@@ -74,6 +87,7 @@
         <h1>Your search results  are:</h1>
       </div>
       {% if Found == True %}
+      {% for search_profile in search_profiles %}
       <div class="container-search">
             <div class="top-frame">
              <div class="usericon">
@@ -89,10 +103,11 @@
               </span>
               </a>
               {% load tz %}
-               <span class="frame-usname">{{search_profile.username}} {{post.posted_at}}</i></span>        
+               <span class="frame-usname">{{search_profile.username}}</i></span>        
               </div>
              </div>
           </div>
+          {% endfor %}
           {% else %}
           <div class="container-head">
         <h4>No Users Found</h4>

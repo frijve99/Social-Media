@@ -38,7 +38,7 @@ def signin(request):
     else:
         return render(request, 'signin.html')
     
-
+ 
 #For Verifying Email
 def verify_email(request,token):
 
@@ -81,6 +81,7 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
+        print("ELLO")
         
         if password == password2:
             if User.objects.filter(email=email).exists():
@@ -486,19 +487,20 @@ def search(request):
     context = {}
     if request.method == 'POST':
         search_name = request.POST['search']
-        search_profile= Profile.objects.filter(username = search_name).first()
-        # print(search_profile.firstname)
-        if search_profile == None:
+        search_profile= Profile.objects.filter(username__icontains = search_name)
+        print(search_profile)
+        if Profile.objects.filter(username__icontains = search_name).exists():
+             context = {
+           'user_profile' : profile_obj,
+           'search_profiles' : search_profile,
+           'Found' : True
+           } 
+           
+        else:
             context = {
            'user_profile' : profile_obj,
            'Found' : False
             }
-        else:
-            context = {
-           'user_profile' : profile_obj,
-           'search_profile' : search_profile,
-           'Found' : True
-           }
     else :
          context = {
            'user_profile' : profile_obj,
