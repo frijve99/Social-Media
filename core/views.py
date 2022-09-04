@@ -644,11 +644,13 @@ def comment(request):
 def chat(request):
     username = request.user.username
     friendlist = Messenger.objects.filter(username=username)
-    for friend in friendlist:
-        print(friend.friend)
+    profile_obj = Profile.objects.filter(username=username).first()
+    # for friend in friendlist:
+    #     print(friend.friend)
 
     context = {
-        'friendlist':friendlist
+        'friendlist':friendlist,
+        'profile_obj':profile_obj,
     }
     return render(request,'chat.html',context) 
 

@@ -61,6 +61,16 @@
                     <h5 id="messageusername">Turag</h5>
                     <p id="message" >Hey rijvi bro</p>
                     <span class="date">Send at 2a.m</span>
+                </div> 
+                <div class="message outgoing">
+                    <h5 id="messageusername">Turag</h5>
+                    <p id="message" >Hey rijvi bro fjhdgfudyuf dfnbjhdgfdf djfgvuhdgfuyd fhjgdhjgfd fhjdgfhgduygfhd nbfvdhvfgdhgf dbnfvgdvghfd fvdghvfd fbdvghfvd fbdvfg</p>
+                    <span class="date">Send at 2a.m</span>
+                </div> 
+                <div class="message incoming">
+                    <h5 id="messageusername">Turag</h5>
+                    <p id="message" >Incoming</p>
+                    <span class="date">Send at 2a.m</span>
                 </div> {% endcomment %}
             </div>
             <form method="POST" id="form">
@@ -76,6 +86,7 @@
     </main>
     <script>
         let current=0
+        let open=0
 
         var uwindow=Document.querySelector('.users-window');
         function show_hide(){
@@ -112,6 +123,7 @@
         function openUser(username){
             if(current>0){
                clearInterval(current);
+               open=0
             }
            openMessage(username);
         }
@@ -132,6 +144,12 @@
                         
                         addMessage(response.messages[message].text,response.messages[message].from_username,response.messages[message].sends_at)
                       }
+                      if(open==0){
+                         var objDiv = document.getElementById("viewchat");
+                         objDiv.scrollTop = objDiv.scrollHeight;
+                         open=1;
+                      }
+                      
                    
                    },
                  error: function(response){
@@ -145,10 +163,17 @@
              
              var dt  = new Date(time);
              date = dt.toString().substring(0,25);
-             var temp = "<div class='message incoming'><h4 id='message-username'>"+username+"</h4><p id='message' >"+text+"</p><span class='date'>Send at "+date+"</span></div>"
+             var profile_username = "{{profile_obj.username}}"
+             
+             if (profile_username==username){
+                  var temp = "<div class='message outgoing'><h4 id='message-username'>"+"You"+"</h4><p id='message' >"+text+"</p><span class='date'>Send at "+date+"</span></div>"
+             }
+             else{
+                 var temp = "<div class='message incoming'><h4 id='message-username'>"+username+"</h4><p id='message' >"+text+"</p><span class='date'>Send at "+date+"</span></div>"
+             }
+             
              $("#viewchat").append(temp);
-             var objDiv = document.getElementById("viewchat");
-             objDiv.scrollTop = objDiv.scrollHeight;
+             
         }
     </script>
 

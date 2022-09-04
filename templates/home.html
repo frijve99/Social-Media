@@ -29,7 +29,7 @@
           <li>
             {% comment %} redirect to home page {% endcomment %}
             <a href="{% url 'home' %}">
-              ><button class="btn">
+              <button class="btn">
                 <img src="{% static 'image/home-edit.png' %}" alt="" />
               </button>
             </a>
@@ -51,9 +51,11 @@
           </a>
           </li>
           <li>
+            <a href="/chat">
             <button class="btn">
               <img src="{% static 'image/message.png' %}" alt="" />
             </button>
+          </a>
           </li>
         </ul>
       </div>
