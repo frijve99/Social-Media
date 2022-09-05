@@ -117,6 +117,13 @@ main div.container div.chat-window div.chats div.message div.outgoing {
 .incoming {
   border-radius: 10px 50px 50px 10px;
 }
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: black;
+}
 .outgoing {
   margin-left: auto;
   color: #ffffff;

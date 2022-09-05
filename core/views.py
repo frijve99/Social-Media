@@ -21,6 +21,7 @@ from operator import itemgetter
 
 # Create your views here.
 
+
 #Signin
 def signin(request):
     if request.method=='POST':
@@ -53,8 +54,8 @@ def verify_email(request,token):
       profile_obj.save()
       
       #auto login and direct to welcome Setting Page
-      username = user_obj.username
-      password = user_obj.password
+    #   username = user_obj.username
+    #   password = user_obj.password
     #   print(password)
     #   user = us
 
@@ -81,7 +82,7 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
-        print("ELLO")
+        # print("ELLO")
         
         if password == password2:
             if User.objects.filter(email=email).exists():
@@ -147,7 +148,7 @@ def welcomeSettings(request):
         profile_obj.gender = gender
         profile_obj.profileimg = image
         profile_obj.bio = bio
-        profile_obj.gender
+        # profile_obj.gender
         profile_obj.country = country
         profile_obj.dob = dob
         profile_obj.firstname = firstname
@@ -225,9 +226,9 @@ def profile(request):
 def profiletest(request,name):
     user_object = request.user
     username = request.user.username
-    profile_obj = Profile.objects.filter(username = username).first()
-    view_user_object = User.objects.filter(username = name)
-    view_profile_object = Profile.objects.filter(username = name).first()
+    profile_obj = Profile.objects.filter(username = username).first() #browsing user
+    view_user_object = User.objects.filter(username = name)   
+    view_profile_object = Profile.objects.filter(username = name).first()#Profile User
     # print(view_profile_object)
     # print(name)
     posts = Post.objects.filter(username = name).order_by('posted_at')
@@ -476,6 +477,8 @@ def follow(request):
         following_profile.follower = following_profile.follower-1
         follower_profile.save()
         following_profile.save()
+        messenger_obj = Messenger.objects.filter(username=follower_profile.username,friend=following_profile.username)
+        messenger_obj.delete()
         return redirect(f'profile/{following_name}')
 
 
@@ -573,6 +576,8 @@ def following(request,name):
 
     return render(request,'following.html',context)
 
+
+@login_required(login_url='signin')
 def post(request,id):
     user_obj = request.user
     username = user_obj.username
@@ -643,6 +648,8 @@ def comment(request):
      }
      return JsonResponse(context)
 
+
+@login_required(login_url='signin')
 def chat(request):
     username = request.user.username
     friendlist = Messenger.objects.filter(username=username)
@@ -666,7 +673,7 @@ def sendMessage(request):
         from_username = request.user.username
         text = request.POST['text']
         to_username = request.POST['name']
-        print(to_username)
+        # print(to_username)
         new_message = Message.objects.create(from_username=from_username,to_username=to_username,text=text)
         new_message.save()
         prf_obj = Profile.objects.filter(username=to_username).first()
