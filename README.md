@@ -36,17 +36,13 @@ To set up FAI on your local machine using XAMPP and MySQL, follow these steps:
 
 1. **Clone the Repository:**
    git clone https://github.com/frijve99/FAI.git
-   
-Install Dependencies:
-bash
-Copy code
-pip install -r requirements.txt
-Setup Database:
 
+   
+Setup Database:
 Create a MySQL database in XAMPP named "FAI."
+
 Open settings.py in your Django project and update the DATABASES configuration:
-python
-Copy code
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
