@@ -1,6 +1,6 @@
 # FAI - Social Media Platform
 
-FAI is a social media platform developed using Python with the Django framework. It utilizes HTML, CSS, JavaScript, Bootstrap, AJAX, and MySQL for a seamless and interactive user experience. This project empowers users to register, create connections, and share content within a vibrant online community.
+FAI is a social media platform developed using Python with the Django framework. It utilizes HTML, CSS, JavaScript, Bootstrap, AJAX, and MySQL for a seamless and interactive user experience. This project empowers users to register, create connections, and share content within a vibrant online community.It is a social media platform designed to connect users with each other in a dynamic and interactive online environment. This project provides a range of features that allow users to create profiles, share content, connect with friends, and engage in meaningful interactions.
 
 ## Features
 
